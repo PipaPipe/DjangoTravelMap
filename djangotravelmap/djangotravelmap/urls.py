@@ -9,9 +9,9 @@ urlpatterns = [
 
     path('marks', include('marks.urls')),
 
-    path('entry', include('users_app.urls'))
+    # path('entry', include('users_app.urls'))
 
-    # path('authorization.html', include('users_app.urls'))
-    # path('registration', include('users_app.urls')),
+    # path('authorization', include('users_app.urls'), name='auth1'),
+    # path('registration', include('users_app.urls'), name='reg1'),
 
 ]

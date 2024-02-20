@@ -4,5 +4,11 @@
 
 {% block content %}
     <h1>Авторизация</h1>
-    <p>Авторизация</p>
+    <form action="" method="post">{% csrf_token %}
+
+        {{ form.as_p }}
+
+        <button type="submit">Авторизоваться</button>
+        <a href="/">Назад</a>
+    </form>
 {% endblock %}
