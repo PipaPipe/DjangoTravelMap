@@ -5,9 +5,9 @@ from django.urls import path, include
 urlpatterns = [
     path('admin/', admin.site.urls),
 
-    path('', include('main.urls')), # Обращаемся к файлу др. приложения(через include)
+    path('', include('main.urls'), name='home'), # Обращаемся к файлу др. приложения(через include)
 
-    path('marks', include('marks.urls')),
+    path('marks', include('marks.urls'), name='marks'),
 
     # path('entry', include('users_app.urls'))
 

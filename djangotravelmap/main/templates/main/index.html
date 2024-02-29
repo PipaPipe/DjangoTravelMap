@@ -4,8 +4,8 @@
 
 {% block content %}
 
-    {% if user.is_authenticated %}
-        <h3>Добро пожаловать, {{user.username}}</h3>
+    {% if request.user.is_authenticated %}
+        <h3>Добро пожаловать, {{request.user.username}}</h3>
         <a href="{% url 'logout' %}">Выйти</a>
     {% else %}
         <a href="{% url 'auth' %}">Авторизация</a>
@@ -13,6 +13,6 @@
     {% endif %}
 
     <h1>Главная страница</h1>
-    <p>Главная страница</p>
+    <p>Что-то</p>
 
 {% endblock %}
