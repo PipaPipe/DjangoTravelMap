@@ -42,7 +42,8 @@ class LoginFormView(DataMixin, LoginView):
         return dict(list(context.items()) + list(c_def.items()))
 
     def get_success_url(self):
-        return reverse_lazy('auth')
+        return reverse('main:home')
+        # redirect('')
 
     def form_invalid(self, form):
         return super(LoginFormView, self).form_invalid(form)

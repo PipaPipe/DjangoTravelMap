@@ -6,10 +6,10 @@
 
     {% if request.user.is_authenticated %}
         <h3>Добро пожаловать, {{request.user.username}}</h3>
-        <a href="{% url 'main:users_app:logout' %}">Выйти</a>
+        <a href="{% url 'logout' %}">Выйти</a>
     {% else %}
-        <a href="{% url 'main:users_app:auth' %}">Авторизация</a>
-        <a href="{% url 'main:users_app:reg' %}">Регистрация</a>
+        <a href="{% url 'auth' %}">Авторизация</a>
+        <a href="{% url 'reg' %}">Регистрация</a>
     {% endif %}
 
     <h1>Главная страница</h1>
