@@ -1,0 +1,21 @@
+{% extends 'main/layout.html' %}
+
+{% block title %}Главная страница{% endblock %}
+
+{% block content %}
+
+    {% if request.user.is_authenticated %}
+        <h3>Добро пожаловать, {{request.user.username}}</h3>
+        <a href="{% url 'main:users_app:logout' %}">Выйти</a>
+          <div id="map">
+            <div class="leaflet-control coordinate"></div>
+          </div>
+    {% else %}
+        <a href="{% url 'main:users_app:auth' %}">Авторизация</a>
+        <a href="{% url 'main:users_app:reg' %}">Регистрация</a>
+    {% endif %}
+
+    <h1>Главная страница</h1>
+    <p>Что-то</p>
+
+{% endblock %}

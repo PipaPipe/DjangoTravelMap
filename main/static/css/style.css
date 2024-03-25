@@ -1,0 +1,214 @@
+body {
+  margin: 0;
+  padding: 0;
+}
+
+#map {
+  width: 100%;
+  height: 100vh;
+}
+
+.coordinate {
+  position: absolute;
+  bottom: 10px;
+  right: 50%;
+}
+
+.leaflet-popup-content-wrapper {
+  /* transform: translate(-50%, -50%);
+  -webkit-box-shadow: 3px 4px 4px 1px rgba(0, 0, 0, 0.47);
+  -moz-box-shadow: 3px 4px 4px 1px rgba(0, 0, 0, 0.47);
+  box-shadow: 3px 4px 4px 1px rgba(0, 0, 0, 0.47); */
+  border-radius: 25px;
+  /* background-color: #fff; */
+  width: 600px;
+  padding: 10px 25px 25px;
+}
+
+.leaflet-marker-icon {
+  margin-top: -40px !important;
+}
+
+.custom-popup {
+  width: 600px;
+  padding: 50px;
+  position: absolute;
+  border-radius: 25px;
+  background-color: #fff;
+  z-index: 999;
+  top: 20%;
+  left: 50%;
+  margin-right: -50%;
+  transform: translate(-50%, -50%);
+  -webkit-box-shadow: 3px 4px 4px 1px rgba(0, 0, 0, 0.47);
+  -moz-box-shadow: 3px 4px 4px 1px rgba(0, 0, 0, 0.47);
+  box-shadow: 3px 4px 4px 1px rgba(0, 0, 0, 0.47);
+}
+
+.popup-header {
+  display: flex;
+  justify-content: space-between;
+}
+
+/*DRAG AND DROP*/
+.photo-container {
+  width: 800px;
+  margin: 0 auto;
+}
+
+#drop-area {
+  border: 2px dashed #ccc;
+  border-radius: 20px;
+  width: 480px;
+  margin: 50px auto;
+  padding: 20px;
+  text-align: center;
+}
+/******************************//******************************/
+.input-file {
+	position: relative;
+	display: inline-block;
+}
+.input-file span {
+	position: relative;
+	display: inline-block;
+	cursor: pointer;
+	outline: none;
+	text-decoration: none;
+	font-size: 14px;
+	vertical-align: middle;
+	color: rgb(255 255 255);
+	text-align: center;
+	border-radius: 4px;
+	background-color: #419152;
+	line-height: 22px;
+	height: 40px;
+	padding: 10px 20px;
+	box-sizing: border-box;
+	border: none;
+	margin: 0;
+	transition: background-color 0.2s;
+}
+.input-file input[type=file] {
+	position: absolute;
+	z-index: -1;
+	opacity: 0;
+	display: block;
+	width: 0;
+	height: 0;
+}
+ 
+/* Focus */
+.input-file input[type=file]:focus + span {
+	box-shadow: 0 0 0 0.2rem rgba(0,123,255,.25);
+}
+ 
+/* Hover/active */
+.input-file:hover span {
+	background-color: #59be6e;
+}
+.input-file:active span {
+	background-color: #2E703A;
+}
+ 
+/* Disabled */
+.input-file input[type=file]:disabled + span {
+	background-color: #eee;
+}
+/******************************/
+
+.highlight {
+  border: 2px dashed #000 !important;
+}
+
+.instructions {
+  font-size: 1.2em;
+  color: #666;
+  margin-bottom: 10px;
+}
+
+.error {
+  color: red;
+  font-size: 0.8em;
+  margin-top: 10px;
+}
+.preview-container {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  
+}
+
+.image-container {
+  position: relative;
+  width: 200px;
+}
+
+.image-container > img {
+  object-fit: cover;
+  width: 200px;
+  height: 200px;
+  
+}
+
+.info {
+  width: 190px; /* Задайте желаемую ширину контейнера */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  position: absolute;
+  top: 180px;
+  left: 5px;
+  color: #fff;
+}
+
+.remove-button {
+  position: absolute;
+  top: 0;
+  right: 0;
+  background: none;
+  border: none;
+  color: white;
+  font-size: 24px;
+  cursor: pointer;
+  padding: 5px;
+  -webkit-text-stroke: 1px #000;
+}
+
+.remove-button:hover {
+  color: #dfdfdf;
+}
+
+
+/*Модальное окно добавления маркера*/
+label {
+  display: block;
+  margin-bottom: 5px;
+}
+input[type="text"] {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+textarea {
+  width: 100%;
+  height: 100px;
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  resize: none;
+}
+input[type="submit"] {
+  padding: 10px 20px;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+input[type="submit"]:hover {
+  background-color: #45a049;
+}
