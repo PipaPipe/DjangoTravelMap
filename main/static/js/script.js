@@ -17,18 +17,41 @@ var myIcon = L.icon({
   iconSize: [40, 40],
 });
 
+function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+        for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i].trim();
+            // Does this cookie string begin with the name we want?
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+
+console.log(getCookie('csrftoken'))
 
 // Функция создания маркера на карте
 function addMarker(coordinates) {
   L.marker([coordinates.lat, coordinates.lng], { icon: myIcon, }).addTo(map)
 
   let response = fetch('/', {
-    method: 'get'.
+    method: 'post',
     headers: {
-        'X-Requested-With' : 'XMLHttpRequest',
-        'Content-Type' : 'application/json'
+        'X-Requested-With': 'XMLHttpRequest',
+        'Content-Type': 'application/json',
+        'X-CSRFToken': getCookie('csrftoken')
+    },
+    body: {
+        'lng':1,
+        'lat':1
     }
   })
+  console.log(getCookie('csrftoken'))
 }
 
 
