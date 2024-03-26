@@ -36,22 +36,24 @@ function getCookie(name) {
 console.log(getCookie('csrftoken'))
 
 // Функция создания маркера на карте
-function addMarker(coordinates) {
+async function addMarker(coordinates) {
   L.marker([coordinates.lat, coordinates.lng], { icon: myIcon, }).addTo(map)
 
-  let response = fetch('/', {
-    method: 'post',
+  let response = await fetch('http://127.0.0.1:8000/', {
+    method: 'POST',
     headers: {
         'X-Requested-With': 'XMLHttpRequest',
         'Content-Type': 'application/json',
         'X-CSRFToken': getCookie('csrftoken')
     },
-    body: {
-        'lng':1,
+    body: JSON.stringify({
+        'lng':230203203,
         'lat':1
-    }
+    })
   })
+
   console.log(getCookie('csrftoken'))
+  return await response.json()
 }
 
 
@@ -62,7 +64,7 @@ map.on("contextmenu", function (e) {
   coordinates = e.latlng
   L.popup()
     .setLatLng(coordinates)
-    .setContent(`<form onsubmit="return false">
+    .setContent(`<form method='post' onsubmit="return false">
         <label for="name">Название:</label>
         <input type="text" id="name" name="name">
         <label for="description">Описание:</label>
