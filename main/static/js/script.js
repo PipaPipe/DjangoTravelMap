@@ -33,28 +33,51 @@ function getCookie(name) {
     return cookieValue;
 }
 
+async function makeRequest(url, method, body){
+    let headers = {
+            'X-Requested-With': 'XMLHttpRequest',
+            'content-type': 'application/json'
+    }
+
+    if (method == 'POST'){
+        const csrf = getCookie('csrftoken')
+        headers['X-CSRFToken'] = csrf
+    }
+
+    let response = await fetch(url, {
+        method: method,
+        headers: headers,
+        body: body
+    })
+
+    return await response.json()
+}
+
 console.log(getCookie('csrftoken'))
 
 // Функция создания маркера на карте
 async function addMarker(coordinates) {
   L.marker([coordinates.lat, coordinates.lng], { icon: myIcon, }).addTo(map)
-
-  let response = await fetch('http://127.0.0.1:8000/', {
-    method: 'POST',
-    headers: {
-        'X-Requested-With': 'XMLHttpRequest',
-        'Content-Type': 'application/json',
-        'X-CSRFToken': getCookie('csrftoken')
-    },
-    body: JSON.stringify({
-        'lng':230203203,
-        'lat':1
-    })
-  })
-
-  console.log(getCookie('csrftoken'))
-  return await response.json()
+   makeRequest('/', 'POST', JSON.stringify({'lat': coordinates.lat}))
+//  let response = await fetch('http://127.0.0.1:8000/', {
+//    method: 'POST',
+//    headers: {
+//        //'X-Requested-With': 'XMLHttpRequest',
+//        'X-CSRFToken': getCookie('csrftoken'),
+//        'content-type': 'application/json'
+//    },
+//    body:{
+//        'lat':123,
+//        'lng':'abobus'
+//    }
+//  })
+//  //response.then(d => console.log(d)).catch(e => console.log(e))
+//
+//  console.log(getCookie('csrftoken'))
+//  console.log(response.body)
+//  return response
 }
+
 
 
 // Добавление маркера по нажатию ПКМ. Всплывает модальное окно для заполнения всей инфы по данному месту.
@@ -64,7 +87,7 @@ map.on("contextmenu", function (e) {
   coordinates = e.latlng
   L.popup()
     .setLatLng(coordinates)
-    .setContent(`<form method='post' onsubmit="return false">
+    .setContent(`<form id="myForm" onsubmit="return false">
         <label for="name">Название:</label>
         <input type="text" id="name" name="name">
         <label for="description">Описание:</label>
@@ -79,7 +102,7 @@ map.on("contextmenu", function (e) {
             <p class="error"></p>
         </div>
         <div class="preview-container"></div>
-        <button onclick="addMarker(coordinates)">Добавить место</button>
+        <button onclick="addMarker(coordinates)">Добавить</button>
       </form>`)
     .openOn(map);
   setTimeout(checkDragAndDrop(), 10)
@@ -88,6 +111,23 @@ map.on("contextmenu", function (e) {
   // console.log(photos)
 });
 
+document.getElementById('myForm').addEventListener('submit', function(event) {
+    event.preventDefault();
+
+    var xhr = new XMLHttpRequest();
+    var url = "/";
+    xhr.open("POST", url, true);
+    xhr.setRequestHeader("Content-Type", "application/json");
+
+    var formData = new FormData(this);
+    xhr.send(new URLSearchParams(formData));
+
+    xhr.onreadystatechange = function () {
+        if (xhr.readyState === 4 && xhr.status === 200) {
+            console.log(JSON.parse(xhr.responseText));
+        }
+    };
+});
 // 2 Тестовых предзаполненных маркера
 //var singleMarker = L.marker([28.3949, 84.124], {
 //  icon: myIcon,

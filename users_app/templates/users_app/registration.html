@@ -3,12 +3,15 @@
 {% block title %}Регистрация{% endblock %}
 
 {% block content %}
-    <h1>Регистрация</h1>
-    <form action="" method="post">{% csrf_token %}
+<div class="form-container">
+        <h2>Авторизация</h2>
+        <form class="registration-form" action="" method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
 
-        {{ form.as_p }}
+            <button type="submit">Зарегистрироваться</button>
+            <a href="/">Назад</a>
+        </form>
+</div>
 
-        <button type="submit">Зарегистрироваться</button>
-        <a href="/">Назад</a>
-    </form>
 {% endblock %}

@@ -12,9 +12,9 @@ from .utils import DataMixin
 
 
 class RegisterFormView(DataMixin, CreateView):
-    form_class = forms.RegisterUserForm # Форма для регистрации
-    success_url = '/' # Успешная регистрация
-    template_name = 'users_app/registration.html' # Шаблон с формой
+    form_class = forms.RegisterUserForm  # Форма для регистрации
+    success_url = '/'  # Успешная регистрация
+    template_name = 'users_app/registration.html'  # Шаблон с формой
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
