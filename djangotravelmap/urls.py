@@ -9,7 +9,7 @@ urlpatterns = [
 
     path('', include('main.urls'), name='home'), # Обращаемся к файлу др. приложения(через include)
 
-    path('marks', include('marks.urls'), name='marks'),
+    # path('marks', include('marks.urls'), name='marks'),
 
     # path('entry', include('users_app.urls'))
 
