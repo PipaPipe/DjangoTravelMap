@@ -87,52 +87,51 @@ async function addMarker(coordinates) {
 // Добавление маркера по нажатию ПКМ. Всплывает модальное окно для заполнения всей инфы по данному месту.
 // При нажатии кнопки "Добавить место" данные должны улетать на бэк. 
 // Потом фронт должен автоматически обновляться и рисовать на карте последний добавленный в бд маркер.
+map.on("contextmenu", function (e) {
+  coordinates = e.latlng
+  L.popup()
+    .setLatLng(coordinates)
+    .setContent(`<form id="myForm" onsubmit="return false">
+        <label for="name">Название:</label>
+        <input type="text" id="name" name="name">
+        <label for="description">Описание:</label>
+        <textarea id="description" name="description"></textarea>
+        <div id="drop-area">
+            <p class="instructions">Drag & Drop one or more files or click to select</p>
+            <p class="instructions">Only .jpeg, .png, .gif images allowed</p>
+            <label class="input-file">
+	   	        <input onchange="previewFiles(this.files)" type="file"  multiple>		
+	   	        <span>Выберите файл</span>
+ 	          </label>
+            <p class="error"></p>
+        </div>
+        <div class="preview-container"></div>
+        <button onclick="addMarker(coordinates)">Добавить</button>
+      </form>`)
+    .openOn(map);
+  setTimeout(checkDragAndDrop(), 10)
+  // console.log(name)
+  // console.log(description)
+  // console.log(photos)
+});
 
-//map.on("contextmenu", function (e) {
-//  coordinates = e.latlng
-//  L.popup()
-//    .setLatLng(coordinates)
-//    .setContent(`<form id="myForm" onsubmit="return false">
-//        <label for="name">Название:</label>
-//        <input type="text" id="name" name="name">
-//        <label for="description">Описание:</label>
-//        <textarea id="description" name="description"></textarea>
-//        <div id="drop-area">
-//            <p class="instructions">Drag & Drop one or more files or click to select</p>
-//            <p class="instructions">Only .jpeg, .png, .gif images allowed</p>
-//            <label class="input-file">
-//	   	        <input onchange="previewFiles(this.files)" type="file"  multiple>
-//	   	        <span>Выберите файл</span>
-// 	          </label>
-//            <p class="error"></p>
-//        </div>
-//        <div class="preview-container"></div>
-//        <button onclick="addMarker(coordinates)">Добавить</button>
-//      </form>`)
-//    .openOn(map);
-//  setTimeout(checkDragAndDrop(), 10)
-//  // console.log(name)
-//  // console.log(description)
-//  // console.log(photos)
-//});
+document.getElementById('myForm').addEventListener('submit', function(event) {
+    event.preventDefault();
 
-//document.getElementById('myForm').addEventListener('submit', function(event) {
-//    event.preventDefault();
-//
-//    var xhr = new XMLHttpRequest();
-//    var url = "/";
-//    xhr.open("POST", url, true);
-//    xhr.setRequestHeader("Content-Type", "application/json");
-//
-//    var formData = new FormData(this);
-//    xhr.send(new URLSearchParams(formData));
-//
-//    xhr.onreadystatechange = function () {
-//        if (xhr.readyState === 4 && xhr.status === 200) {
-//            console.log(JSON.parse(xhr.responseText));
-//        }
-//    };
-//});
+    var xhr = new XMLHttpRequest();
+    var url = "/";
+    xhr.open("POST", url, true);
+    xhr.setRequestHeader("Content-Type", "application/json");
+
+    var formData = new FormData(this);
+    xhr.send(new URLSearchParams(formData));
+
+    xhr.onreadystatechange = function () {
+        if (xhr.readyState === 4 && xhr.status === 200) {
+            console.log(JSON.parse(xhr.responseText));
+        }
+    };
+});
 // 2 Тестовых предзаполненных маркера
 //var singleMarker = L.marker([28.3949, 84.124], {
 //  icon: myIcon,

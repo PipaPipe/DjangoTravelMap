@@ -7,6 +7,7 @@ class Mark(models.Model):
     user_id = models.IntegerField('ID пользователя')
     content_id = models.IntegerField('ID контента')
     # content_id = models.ForeignKey(name='ID контента', to='Content', on_delete=models.CASCADE)
+    objects = models.Manager()
 
     def __str__(self):
         return f'{self.latitude}, {self.latitude}'
