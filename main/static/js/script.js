@@ -15,6 +15,7 @@ function createMap(){
 }
 
 
+
 // Иконка для всех маркеров
 var myIcon = L.icon({
   iconUrl: "static/img/red_marker.png",
@@ -60,26 +61,9 @@ async function makeRequest(url, method, body){
 console.log(getCookie('csrftoken'))
 
 // Функция создания маркера на карте
-async function addMarker(coordinates) {
-  L.marker([coordinates.lat, coordinates.lng], { icon: myIcon, }).addTo(map)
-   makeRequest('/', 'POST', JSON.stringify({'lat': coordinates.lat}))
-//  let response = await fetch('http://127.0.0.1:8000/', {
-//    method: 'POST',
-//    headers: {
-//        //'X-Requested-With': 'XMLHttpRequest',
-//        'X-CSRFToken': getCookie('csrftoken'),
-//        'content-type': 'application/json'
-//    },
-//    body:{
-//        'lat':123,
-//        'lng':'abobus'
-//    }
-//  })
-//  //response.then(d => console.log(d)).catch(e => console.log(e))
-//
-//  console.log(getCookie('csrftoken'))
-//  console.log(response.body)
-//  return response
+function addMarker(coordinates, map) {
+    console.log(map)
+    L.marker([coordinates.lat, coordinates.lng], {icon:myIcon}).addTo(map)
 }
 
 
@@ -88,33 +72,37 @@ async function addMarker(coordinates) {
 // При нажатии кнопки "Добавить место" данные должны улетать на бэк. 
 // Потом фронт должен автоматически обновляться и рисовать на карте последний добавленный в бд маркер.
 
-//map.on("contextmenu", function (e) {
-//  coordinates = e.latlng
-//  L.popup()
-//    .setLatLng(coordinates)
-//    .setContent(`<form id="myForm" onsubmit="return false">
-//        <label for="name">Название:</label>
-//        <input type="text" id="name" name="name">
-//        <label for="description">Описание:</label>
-//        <textarea id="description" name="description"></textarea>
-//        <div id="drop-area">
-//            <p class="instructions">Drag & Drop one or more files or click to select</p>
-//            <p class="instructions">Only .jpeg, .png, .gif images allowed</p>
-//            <label class="input-file">
-//	   	        <input onchange="previewFiles(this.files)" type="file"  multiple>
-//	   	        <span>Выберите файл</span>
-// 	          </label>
-//            <p class="error"></p>
-//        </div>
-//        <div class="preview-container"></div>
-//        <button onclick="addMarker(coordinates)">Добавить</button>
-//      </form>`)
-//    .openOn(map);
-//  setTimeout(checkDragAndDrop(), 10)
-//  // console.log(name)
-//  // console.log(description)
-//  // console.log(photos)
-//});
+function addPopupOnClick(map){
+  map.on("contextmenu", function (e) {
+  coordinates = e.latlng
+  L.popup()
+    .setLatLng(coordinates)
+    .setContent(`<form id="myForm" onsubmit="return false">
+        <label for="name">Название:</label>
+        <input type="text" id="name" name="name">
+        <label for="description">Описание:</label>
+        <textarea id="description" name="description"></textarea>
+        <div id="drop-area">
+            <p class="instructions">Drag & Drop one or more files or click to select</p>
+            <p class="instructions">Only .jpeg, .png, .gif images allowed</p>
+            <label class="input-file">
+	   	        <input onchange="previewFiles(this.files)" type="file"  multiple>
+	   	        <span>Выберите файл</span>
+ 	          </label>
+            <p class="error"></p>
+        </div>
+        <div class="preview-container"></div>
+        <button id="addMarkButton">Добавить</button>
+      </form>`)
+    .openOn(map);
+    console.log(map)
+    document.getElementById('addMarkButton').addEventListener('submit', addMarker(coordinates, map))
+  setTimeout(checkDragAndDrop(), 10)
+});
+}
+
+
+
 
 //document.getElementById('myForm').addEventListener('submit', function(event) {
 //    event.preventDefault();

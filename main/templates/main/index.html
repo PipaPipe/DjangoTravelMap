@@ -23,18 +23,20 @@
 
 {% block scripts %}
 <script>
+
     document.addEventListener('DOMContentLoaded', () => {
         let map = createMap()
+        console.log(map)
         var myIcon = L.icon({
           iconUrl: "static/img/red_marker.png",
           iconSize: [40, 40],
         });
         let marks = JSON.parse(document.getElementById('mark-json').textContent)
-        console.log(marks)
+
         for (let mark of marks){
-            console.log(mark)
             L.marker([mark['latitude'], mark['longitude']], {icon: myIcon}).addTo(map)
         }
+        addPopupOnClick(map)
     });
 
 </script>

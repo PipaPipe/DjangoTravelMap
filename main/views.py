@@ -27,9 +27,9 @@ class FetchHandler(View):
 
 
 def index(request):
-    context = {'marks': list(Mark.objects.values('latitude', 'longitude', 'content_id', 'user_id'))}
-    print(context)
-    return render(request, 'main/index.html', context)
+    # №context = {'marks': list(Mark.objects.values('latitude', 'longitude', 'content_id', 'user_id'))}
+    # print(context)
+    return render(request, 'main/index.html')
 
 
 def about(request):
