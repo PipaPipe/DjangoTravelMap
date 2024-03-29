@@ -16,11 +16,12 @@ class FetchHandler(View):
         return render(request, 'main/index.html', context)
 
     def post(self, request):
+        print('Выполнение POST-запроса')
         print(request.POST)
         #data = json.loads(request.body)
         # print(data['lng'], data['lat'])
         # res = json.loads(data)
-        #print(data)
+        # print(data)
         return JsonResponse({'val': 'data'}, status=200)
         #print(f)
         # return JsonResponse()

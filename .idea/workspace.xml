@@ -4,11 +4,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a7f87b94-b4df-4f96-a571-b56f5be8215c" name="Changes" comment="Удалил до конца приложение">
+    <list default="true" id="a7f87b94-b4df-4f96-a571-b56f5be8215c" name="Changes" comment="Настроил в моделях внешние ключи + настроил нормальное отображение интерфейса(в стилях закомментил body: display flex)">
+      <change afterPath="$PROJECT_DIR$/main/static/img/Без имени-1.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/main/templates/main/index2.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/migrations/0001_initial.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/main/models.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/static/css/style.css" beforeDir="false" afterPath="$PROJECT_DIR$/main/static/css/style.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/static/js/script.js" beforeDir="false" afterPath="$PROJECT_DIR$/main/static/js/script.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/templates/main/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/main/templates/main/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/main/views.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -58,6 +60,12 @@
     &quot;settings.editor.selected.configurable&quot;: &quot;com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable&quot;
   }
 }</component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\prog\DjangoTravelMap1\main\templates\main" />
+      <recent name="C:\prog\DjangoTravelMap1\main\static\img" />
+    </key>
+  </component>
   <component name="RunManager">
     <configuration name="site1" type="PythonConfigurationType" factoryName="Python">
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -104,7 +112,15 @@
       <option name="project" value="LOCAL" />
       <updated>1711552240785</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="Настроил в моделях внешние ключи + настроил нормальное отображение интерфейса(в стилях закомментил body: display flex)">
+      <option name="closed" value="true" />
+      <created>1711635757176</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1711635757176</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -133,6 +149,7 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="добавил какой-то iml" />
     <MESSAGE value="Удалил до конца приложение" />
-    <option name="LAST_COMMIT_MESSAGE" value="Удалил до конца приложение" />
+    <MESSAGE value="Настроил в моделях внешние ключи + настроил нормальное отображение интерфейса(в стилях закомментил body: display flex)" />
+    <option name="LAST_COMMIT_MESSAGE" value="Настроил в моделях внешние ключи + настроил нормальное отображение интерфейса(в стилях закомментил body: display flex)" />
   </component>
 </project>

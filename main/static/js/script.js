@@ -61,9 +61,21 @@ async function makeRequest(url, method, body){
 console.log(getCookie('csrftoken'))
 
 // Функция создания маркера на карте
-function addMarker(coordinates, map) {
-    console.log(map)
+function addMarker(form, coordinates, map) {
+    // Получаем название и описание из формы
+    let name = form.elements[0].value
+    let description = form.elements[1].value
+    // Получаем массив всех фотографий переданных в одну метку
+    let srcArray = []
+    let parentPhoto = form.querySelector(".preview-container")
+    for(let elem of parentPhoto.children) {
+        srcArray.push(elem.children[0].src)
+    }
+
+    // Создание маркера
     L.marker([coordinates.lat, coordinates.lng], {icon:myIcon}).addTo(map)
+    makeRequest('/', 'POST', JSON.stringify(coordinates))
+    console.log('Добавление маркера')
 }
 
 
@@ -73,11 +85,14 @@ function addMarker(coordinates, map) {
 // Потом фронт должен автоматически обновляться и рисовать на карте последний добавленный в бд маркер.
 
 function addPopupOnClick(map){
+
   map.on("contextmenu", function (e) {
   coordinates = e.latlng
+  map_copy = map
   L.popup()
     .setLatLng(coordinates)
-    .setContent(`<form id="myForm" onsubmit="return false">
+    .setContent(`
+      <form id="myForm" method='post' onsubmit="return false">
         <label for="name">Название:</label>
         <input type="text" id="name" name="name">
         <label for="description">Описание:</label>
@@ -92,11 +107,16 @@ function addPopupOnClick(map){
             <p class="error"></p>
         </div>
         <div class="preview-container"></div>
-        <button id="addMarkButton">Добавить</button>
-      </form>`)
+
+        <button id='addMarkButton'
+            onclick="addMarker(document.getElementById('myForm'), coordinates, map_copy)">
+            Отправить
+        </button>
+      </form>
+      `)
     .openOn(map);
     console.log(map)
-    document.getElementById('addMarkButton').addEventListener('submit', addMarker(coordinates, map))
+//    document.getElementById('addMarkButton').addEventListener('submit', addMarker(coordinates, map))
   setTimeout(checkDragAndDrop(), 10)
 });
 }
