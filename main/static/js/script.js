@@ -7,6 +7,7 @@ function createMap(){
       "http://{s}.google.com/vt/lyrs=m&x={x}&y={y}&z={z}",
       {
         maxZoom: 20,
+        minZoom:3,
         subdomains: ["mt0", "mt1", "mt2", "mt3"],
       }
     );
@@ -156,18 +157,42 @@ function addPopupOnClick(map){
 //  icon: myIcon,
 //}).addTo(map)
 
-function fillContent(marker, title, description){
-let fillContent = ((name, description) => {
-  let content = `<h2 class="popup-title">${name}</h2>
-  <div class="photo-section">
-  <div class="photo-block"></div>
-  </div>
-  <div class="content_description">${description}</div>
-  <div class="preview-container"><div class="image-container"><img src=""></div></div></div>`
-  return content
-})
-  marker.bindPopup(fillContent(title, description))
+function fillContent(marker, title, description, photos){
+let photoArray = ""
+
+
+
+for (let photo of photos){
+//    let wrapper = document.createElement(`<div class="photo-block"><div class="preview-container"><div class="image-container"></div></div></div>`)
+    const div1 = document.createElement('div')
+    const div2 = document.createElement('div')
+    const div3 = document.createElement('div')
+    div1.appendChild(div2)
+    div2.appendChild(div3)
+    div1.classList.add("photo-block")
+    div2.classList.add("preview-container")
+    div3.classList.add("image-container")
+
+    let val = document.createElement('img')
+    val.setAttribute("src", photo)
+    console.log(val)
+    div3.appendChild(val)
+    photoArray += div1
 }
+
+    let fillContent = ((name, description, photoArray) => {
+      let content = `<h2 class="popup-title">${name}</h2>
+      <div class="photo-section">
+        ${photoArray}
+      </div>
+      <div class="content_description">${description}</div>
+      </div>`
+      return content
+    })
+  marker.bindPopup(fillContent(title, description, photoArray))
+}
+
+
 
 
 //singleMarker.bindPopup(fillContent('Маркер 1', 'Какой-то текст с описанием'))

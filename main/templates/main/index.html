@@ -43,6 +43,7 @@
         for (let mark of marks){
             let title = ''
             let descr = ''
+            let photoArray = []
             var marker = L.marker([mark['latitude'], mark['longitude']], {icon: myIcon}).addTo(map)
             for (let elem of content){
                 if (mark['content_id'] == elem['id']) {
@@ -51,10 +52,15 @@
                     break
                 }
             }
-            fillContent(marker, title, descr)
+            for (let elem of photos) {
+
+                if (mark['content_id'] == elem['content_id']) {
+                    photoArray.push(elem['photo'])
+                }
+            }
+            fillContent(marker, title, descr, photoArray)
         }
         addPopupOnClick(map)
-
     });
 
 
