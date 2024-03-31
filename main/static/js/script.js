@@ -53,9 +53,10 @@ async function makeRequest(url, method, body){
         method: method,
         headers: headers,
         body: body
-    })
+    }).then(response => response.json())
+    .then(data => console.log())
 
-    return await response.json()
+    return await response
 }
 
 console.log(getCookie('csrftoken'))
@@ -63,19 +64,24 @@ console.log(getCookie('csrftoken'))
 // Функция создания маркера на карте
 function addMarker(form, coordinates, map) {
     // Получаем название и описание из формы
-    let name = form.elements[0].value
-    let description = form.elements[1].value
+    let markTitle = form.elements[0].value
+    let markDescription = form.elements[1].value
     // Получаем массив всех фотографий переданных в одну метку
-    let srcArray = []
+    let sourcesMarkArray = []
     let parentPhoto = form.querySelector(".preview-container")
     for(let elem of parentPhoto.children) {
-        srcArray.push(elem.children[0].src)
+        sourcesMarkArray.push(elem.children[0].src)
     }
-
+    markData = {
+        'lat': coordinates.lat,
+        'lng': coordinates.lng,
+        'title': markTitle,
+        'description': markDescription,
+        'sources': sourcesMarkArray
+    }
     // Создание маркера
     L.marker([coordinates.lat, coordinates.lng], {icon:myIcon}).addTo(map)
-    makeRequest('/', 'POST', JSON.stringify(coordinates))
-    console.log('Добавление маркера')
+    makeRequest('/', 'POST', JSON.stringify(markData))
 }
 
 
