@@ -12,6 +12,8 @@
           </div>
 
     {{ marks|json_script:"mark-json"}}
+    {{ content|json_script:"content-json"}}
+    {{ photos|json_script:"photos-json"}}
     {% else %}
         <a href="{% url 'main:users_app:auth' %}">Авторизация</a>
         <a href="{% url 'main:users_app:reg' %}">Регистрация</a>
@@ -33,9 +35,23 @@
           iconSize: [40, 40],
         });
         let marks = JSON.parse(document.getElementById('mark-json').textContent)
-
+        let content = JSON.parse(document.getElementById('content-json').textContent)
+        let photos = JSON.parse(document.getElementById('photos-json').textContent)
+        console.log(marks)
+        console.log(content)
+        console.log(photos)
         for (let mark of marks){
-            L.marker([mark['latitude'], mark['longitude']], {icon: myIcon}).addTo(map)
+            let title = ''
+            let descr = ''
+            var marker = L.marker([mark['latitude'], mark['longitude']], {icon: myIcon}).addTo(map)
+            for (let elem of content){
+                if (mark['content_id'] == elem['id']) {
+                    title = elem['title']
+                    descr = elem['description']
+                    break
+                }
+            }
+            fillContent(marker, title, descr)
         }
         addPopupOnClick(map)
 

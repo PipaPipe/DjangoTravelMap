@@ -156,7 +156,7 @@ function addPopupOnClick(map){
 //  icon: myIcon,
 //}).addTo(map)
 
-
+function fillContent(marker, title, description){
 let fillContent = ((name, description) => {
   let content = `<h2 class="popup-title">${name}</h2>
   <div class="photo-section">
@@ -166,6 +166,9 @@ let fillContent = ((name, description) => {
   <div class="preview-container"><div class="image-container"><img src=""></div></div></div>`
   return content
 })
+  marker.bindPopup(fillContent(title, description))
+}
+
 
 //singleMarker.bindPopup(fillContent('Маркер 1', 'Какой-то текст с описанием'))
 //
