@@ -5,9 +5,11 @@ from . import views
 app_name = 'users_app'
 
 urlpatterns = [
+    path('', views.redirect_to_to_login_form),
     path('registration', views.RegisterFormView.as_view(), name='reg'), # Вызываем класс как представление
     path('authorization', views.LoginFormView.as_view(), name='auth'),
     path('logout', views.logout_user, name='logout'),
+    path('map', include('main.urls', namespace='main'))
     # path('exit', include('djangotravelmap.urls') , name='exit'),
 
 

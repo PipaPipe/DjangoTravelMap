@@ -8,7 +8,11 @@ from .models import *
 
 
 class FetchHandler(View):
+
     def get(self, request):
+        all_users = get_user_model()
+        all_users = list(all_users.objects.values())
+        print(all_users)
         user_context = request.user
         curr_user = request.user.id
         if request.GET.get('user_search') != "":
@@ -30,7 +34,8 @@ class FetchHandler(View):
             'marks': marks,
             'content': content,
             'photos': photos,
-            'user_context': user_context
+            'user_context': user_context,
+            'users_list': all_users
         }
 
         # if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
@@ -70,11 +75,11 @@ class Search(ListView):
         print(context)
         return context
 
-def index(request):
-    # №context = {'marks': list(Mark.objects.values('latitude', 'longitude', 'content_id', 'user_id'))}
-    # print(context)
-    return render(request, 'main/index.html')
+# def index(request):
+#     # №context = {'marks': list(Mark.objects.values('latitude', 'longitude', 'content_id', 'user_id'))}
+#     # print(context)
+#     return render(request, 'main/index.html')
 
 
-def about(request):
-    return render(request, 'main/add.html')
+# def about(request):
+#     return render(request, 'main/add.html')

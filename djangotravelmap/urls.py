@@ -7,7 +7,7 @@ app_name = 'djangotravelmap'
 urlpatterns = [
     path('admin/', admin.site.urls),
 
-    path('', include('main.urls'), name='home'), # Обращаемся к файлу др. приложения(через include)
+    path('', include('users_app.urls'), name='users_app'),  # Обращаемся к файлу др. приложения(через include)
 
     # path('marks', include('marks.urls'), name='marks'),
 

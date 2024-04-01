@@ -40,6 +40,7 @@ function getCookie(name) {
 }
 
 async function makeRequest(url, method, body){
+    console.log(body)
     let headers = {
             'X-Requested-With': 'XMLHttpRequest',
             'content-type': 'application/json'
@@ -54,18 +55,21 @@ async function makeRequest(url, method, body){
         method: method,
         headers: headers,
         body: body
-    }).then(response => response.json())
-    .then(data => console.log())
+    })
+
 
     return await response
 }
 
-console.log(getCookie('csrftoken'))
+
 
 // Функция создания маркера на карте
 function addMarker(form, coordinates, map) {
     // Получаем название и описание из формы
     let markTitle = form.elements[0].value
+    if (markTitle == ""){
+        return
+    }
     let markDescription = form.elements[1].value
     // Получаем массив всех фотографий переданных в одну метку
     let sourcesMarkArray = []
@@ -82,7 +86,8 @@ function addMarker(form, coordinates, map) {
     }
     // Создание маркера
     L.marker([coordinates.lat, coordinates.lng], {icon:myIcon}).addTo(map)
-    makeRequest('/', 'POST', JSON.stringify(markData))
+    makeRequest('/map', 'POST', JSON.stringify(markData))
+    map.closePopup()
 }
 
 
@@ -101,7 +106,7 @@ function addPopupOnClick(map){
     .setContent(`
       <form id="myForm" method='post' onsubmit="return false">
         <label for="name">Название:</label>
-        <input type="text" id="name" name="name">
+        <input required type="text" id="name" name="name">
         <label for="description">Описание:</label>
         <textarea id="description" name="description"></textarea>
         <div id="drop-area">
@@ -122,7 +127,8 @@ function addPopupOnClick(map){
       </form>
       `)
     .openOn(map);
-    console.log(map)
+
+
 //    document.getElementById('addMarkButton').addEventListener('submit', addMarker(coordinates, map))
   setTimeout(checkDragAndDrop(), 10)
 });
@@ -163,21 +169,23 @@ let photoArray = ""
 
 
 for (let photo of photos){
-//    let wrapper = document.createElement(`<div class="photo-block"><div class="preview-container"><div class="image-container"></div></div></div>`)
-    const div1 = document.createElement('div')
-    const div2 = document.createElement('div')
-    const div3 = document.createElement('div')
-    div1.appendChild(div2)
-    div2.appendChild(div3)
-    div1.classList.add("photo-block")
-    div2.classList.add("preview-container")
-    div3.classList.add("image-container")
-
-    let val = document.createElement('img')
-    val.setAttribute("src", photo)
-    console.log(val)
-    div3.appendChild(val)
-    photoArray += div1
+    photoArray += `<div class="photo-block"><div class="preview-container"><div class="image-container"><img src='${photo}'></div></div></div>`
+//    const div1 = document.createElement('div')
+//    const div2 = document.createElement('div')
+//    const div3 = document.createElement('div')
+//    div1.appendChild(div2)
+//    div2.appendChild(div3)
+//    div1.classList.add("photo-block")
+//    div2.classList.add("preview-container")
+//    div3.classList.add("image-container")
+//
+//    let val = document.createElement('img')
+//    val.setAttribute("src", photo)
+//
+//    div3.appendChild(val)
+//    photoArray += div1
+//    let b = ``
+//    console.log(b)
 }
 
     let fillContent = ((name, description, photoArray) => {

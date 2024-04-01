@@ -3,15 +3,30 @@
 {% block title %}Регистрация{% endblock %}
 
 {% block content %}
-<div class="form-container">
+
+<div class="main-container">
+            <div class="project-description">
+            <div class="project-description-head">
+                <h1>JourneyMap</h1>
+            <h3>Travel & Share</h3>
+            <p>Добро пожаловать на Journeymap - вашу карту мира приключений! Здесь каждый может делиться своими удивительными путешествиями, соединяя миры и сердца через истории и красоты мира. Отмечайте свои путешествия на карте, описывайте свои приключения, прикрепляйте фотографии и вдохновляйте других на новые открытия. Исследуйте путешествия других путешественников и узнавайте новые места. Делитесь радостью путешествий с Journeymap - ваши мечты о новых приключениях начинаются здесь!</p>
+            </div>
+
+        </div>
+
+     <div class="project-auth">
+         <div class="project-logo"></div>
+         <div class="form-container">
         <h2>Авторизация</h2>
         <form class="registration-form" action="" method="post">
             {% csrf_token %}
             {{ form.as_p }}
 
             <button type="submit">Зарегистрироваться</button>
-            <a href="/">Назад</a>
+            <a href="/authorization">Авторизация</a>
         </form>
-</div>
+            </div>
+     </div>
 
+</div>
 {% endblock %}

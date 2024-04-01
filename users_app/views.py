@@ -13,7 +13,7 @@ from .utils import DataMixin
 
 class RegisterFormView(DataMixin, CreateView):
     form_class = forms.RegisterUserForm  # Форма для регистрации
-    success_url = '/'  # Успешная регистрация
+    # success_url = '/'  # Успешная регистрация
     template_name = 'users_app/registration.html'  # Шаблон с формой
 
     def get_context_data(self, *, object_list=None, **kwargs):
@@ -25,16 +25,17 @@ class RegisterFormView(DataMixin, CreateView):
         user = form.save()
         login(self.request, user)
         # form.save()
-        return redirect('/')
+        return redirect('/map')
         # return super(RegisterFormView, self).form_valid(form)
 
     def form_invalid(self, form):
         return super(RegisterFormView, self).form_invalid(form)
 
+
 class LoginFormView(DataMixin, LoginView):
-    form_class = forms.LoginUserForm # Форма для авторизации
-    success_url = '/' # Успешная регистрация
-    template_name = 'users_app/authorization.html' # Шаблон с формой
+    form_class = forms.LoginUserForm  # Форма для авторизации
+    # success_url = '/'  # Успешная регистрация
+    template_name = 'users_app/authorization.html'  # Шаблон с формой
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -42,16 +43,20 @@ class LoginFormView(DataMixin, LoginView):
         return dict(list(context.items()) + list(c_def.items()))
 
     def get_success_url(self):
-        return reverse('main:home')
+        return reverse('users_app:main:map')
         # redirect('')
 
     def form_invalid(self, form):
         return super(LoginFormView, self).form_invalid(form)
 
+
 def logout_user(request):
     logout(request)
     return redirect('/')
 
+
+def redirect_to_to_login_form(request):
+    return redirect('/authorization')
 # def registration(request):
 #     # u = reverse('./admin')
 #     # return HttpResponse('a')
@@ -67,4 +72,3 @@ def logout_user(request):
 #
 #     # return redirect(url_redirect)
 #     return render(request, 'users_app/authorization.html')
-
