@@ -1,26 +1,36 @@
 import json
 
 from django.shortcuts import render
-from django.views.generic import View
+from django.views.generic import View, ListView
 from django.http import JsonResponse
-from django.contrib.auth import get_user
+from django.contrib.auth import get_user, get_user_model
 from .models import *
 
 
 class FetchHandler(View):
     def get(self, request):
-        content_list = list(Mark.objects.filter(user_id=request.user.id).values('content_id'))
+        user_context = request.user
+        curr_user = request.user.id
+        if request.GET.get('user_search') != "":
+            user = get_user_model()
+            user = list(user.objects.filter(username=request.GET.get('user_search')).values())
+            if len(user) != 0:
+                curr_user = user[0]['id']
+                user_context = user[0]['username']
+
+        content_list = list(Mark.objects.filter(user_id=curr_user).values('content_id'))
         content_indexes = [elem['content_id'] for elem in content_list]
 
         content = list(Content.objects.filter(id__in=content_indexes).values('id', 'title', 'description'))
         photos = list(Photo.objects.filter(content_id__in=content_indexes).values('id', 'photo', 'content_id'))
 
-        marks = list(Mark.objects.filter(user_id=request.user.id).values('latitude', 'longitude', 'content_id',
+        marks = list(Mark.objects.filter(user_id=curr_user).values('latitude', 'longitude', 'content_id',
                                                                               'user_id'))
         context = {
             'marks': marks,
             'content': content,
-            'photos': photos
+            'photos': photos,
+            'user_context': user_context
         }
 
         # if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
@@ -46,6 +56,19 @@ class FetchHandler(View):
         # print(f)
         # return JsonResponse()
 
+
+class Search(ListView):
+    template_name = 'templates/index.html'
+    def get_queryset(self):
+        print(self.request.GET.get('user_search'))
+        #user = get_user()
+        return Mark.objects.filter(user_id=self.request.GET.get('user_search'))
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['user_search'] = Mark.objects.filter(user_id=self.request.GET.get('user_search'))
+        print(context)
+        return context
 
 def index(request):
     # №context = {'marks': list(Mark.objects.values('latitude', 'longitude', 'content_id', 'user_id'))}

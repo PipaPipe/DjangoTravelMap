@@ -6,6 +6,12 @@
 
     {% if request.user.is_authenticated %}
         <h3>Добро пожаловать, {{request.user.username}}</h3>
+        <form method="GET">
+            <input type="search" placeholder="Поиск пользователей" name="user_search">
+            <button type="submit">Поиск</button>
+            <button type="submit">Вернуться к своей карте</button>
+            <div>Отметки пользователя: {{ user_context }}</div>
+        </form>
         <a href="{% url 'main:users_app:logout' %}">Выйти</a>
           <div id="map">
             <div class="leaflet-control coordinate"></div>
