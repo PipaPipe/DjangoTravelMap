@@ -15,8 +15,8 @@
           placeholder="Поиск пользователей"
           name="user_search"
         />
-        <button type="submit">Поиск</button>
-        <button type="submit">Вернуться к своей карте</button>
+        <button class="search_btn" type="submit">Поиск</button>
+        <button class="back_btn" type="submit">Вернуться к своей карте</button>
         <p>Отметки пользователя: {{ user_context }}</p>
       </form>
       <a href="{% url 'users_app:logout' %}">Выйти</a>

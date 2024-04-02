@@ -12,6 +12,10 @@ function createMap(){
       }
     );
     googleStreets.addTo(map);
+    map.zoomControl.remove();
+    L.control.zoom({
+        position: 'topright'
+    }).addTo(map);
     return map
 }
 

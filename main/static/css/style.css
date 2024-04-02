@@ -349,3 +349,109 @@ body {
       background-color: #00a161;
     }
 
+.search_btn {
+border: none;
+background-color: black;
+color: white;
+cursor: pointer;
+height: 30px;
+border-radius: 10px;
+
+transition: background-color 0.2s;
+}
+
+.back_btn {
+border: none;
+background-color: white;
+color: white;
+cursor: pointer;
+height: 30px;
+border: 1px solid black;
+box-sizing: border-box;
+color: black;
+border-radius: 10px;
+
+transition: background-color 0.2s;
+}
+
+
+.search_btn:hover {
+background-color: rgb(51, 51, 51);
+}
+
+.back_btn:hover {
+background-color: rgb(243, 243, 243);
+}
+
+/*.leaflet-popup {
+height: 600px;
+}
+
+.leaflet-popup-content-wrapper {
+padding: 25px 25px 25px;
+width: 620px;
+}*/
+
+input[type="text"] {
+box-sizing: border-box;
+outline: none;
+}
+
+textarea {
+box-sizing: border-box;
+outline: none;
+}
+
+#drop-area {
+margin: 10px auto;
+}
+
+#myForm {
+font-size: 14px;
+display: flex;
+flex-direction: column;
+}
+
+#addMarkButton {
+outline: none;
+padding: 8px;
+font-size: 15px;
+box-sizing: border-box;
+align-self: flex-end;
+border: none;
+color: #fff;
+background-color: black;
+border-radius: 10px;
+cursor: pointer;
+margin-top: 20px;
+
+transition: background-color 0.2s;
+}
+
+#addMarkButton:hover {
+background-color: rgb(43, 43, 43);
+}
+
+.input-file span {
+color: #000;
+border-radius: 12px;
+background-color: white;
+border: 1px solid black;
+box-sizing: border-box;
+box-sizing: border-box;
+}
+
+.input-file span:hover {
+background-color: rgb(243, 243, 243);
+}
+
+.photo-section {
+display: flex;
+justify-content: space-between;
+flex-wrap: wrap;
+}
+
+.content_description {
+margin-top: 10px;
+font-size: 14px;
+}

@@ -12,7 +12,7 @@ class FetchHandler(View):
     def get(self, request):
         all_users = get_user_model()
         all_users = list(all_users.objects.values())
-        print(all_users)
+
         user_context = request.user
         curr_user = request.user.id
         if request.GET.get('user_search') != "":
