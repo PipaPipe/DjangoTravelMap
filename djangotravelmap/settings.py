@@ -73,7 +73,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'djangotravelmap.wsgi.application'
 
-
+DATA_UPLOAD_MAX_MEMORY_SIZE = None
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 

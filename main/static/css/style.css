@@ -328,8 +328,8 @@ body {
       border-radius: 25px;
       background: rgba(255, 255, 255);
       max-width: 500px;
-      z-index: 1000000
-
+      z-index: 1000000;
+      height: 400px;
     }
 
     header > form > input {
@@ -385,12 +385,18 @@ background-color: rgb(243, 243, 243);
 
 /*.leaflet-popup {
 height: 600px;
-}
+}*/
 
 .leaflet-popup-content-wrapper {
 padding: 25px 25px 25px;
 width: 620px;
-}*/
+}
+
+input[type="password"] {
+box-sizing: border-box;
+outline: none;
+width:100%;
+}
 
 input[type="text"] {
 box-sizing: border-box;
@@ -454,4 +460,18 @@ flex-wrap: wrap;
 .content_description {
 margin-top: 10px;
 font-size: 14px;
+}
+
+p {
+ margin:0;
+}
+
+.user_list {
+    height: 140px;
+    overflow: auto;
+    margin: 10px 0;
+}
+
+.user_list::-webkit-scrollbar {
+display: none;
 }

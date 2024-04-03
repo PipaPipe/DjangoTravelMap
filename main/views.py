@@ -8,10 +8,29 @@ from .models import *
 
 
 class FetchHandler(View):
-
     def get(self, request):
         all_users = get_user_model()
         all_users = list(all_users.objects.values())
+
+        all_marks = list(Mark.objects.values())
+
+
+        user_marks_count = {}
+        for user in all_users:
+            for mark in all_marks:
+                if user['id'] == mark['user_id_id']:
+                    if user['username'] not in user_marks_count.keys():
+                        user_marks_count[user['username']] = 1
+                    else:
+                        user_marks_count[user['username']] += 1
+
+        # user_marks_count_list = list(sorted(user_marks_count.items(), key=lambda x: x[1]))
+        # user_marks_count_list.reverse()
+        # user_marks_count = dict(user_marks_count_list)
+        # print(user_marks_count)
+        user_marks_count = list(sorted(user_marks_count.items(), key=lambda x: x[1]))
+        user_marks_count.reverse()
+        user_marks_count = dict(user_marks_count)
 
         user_context = request.user
         curr_user = request.user.id
@@ -35,7 +54,7 @@ class FetchHandler(View):
             'content': content,
             'photos': photos,
             'user_context': user_context,
-            'users_list': all_users
+            'users_list': user_marks_count.items(),
         }
 
         # if request.headers.get('X-Requested-With') == 'XMLHttpRequest':

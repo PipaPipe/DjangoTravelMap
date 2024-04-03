@@ -8,7 +8,7 @@
     {% if request.user.is_authenticated %}
 <header>
       <h3>Добро пожаловать, {{request.user.username}}</h3>
-      <p>Для просмотра путешествий других пользователей введите его имя и нажмите кнопку "Поиск"</p>
+      <p style="margin:10px 0">Для просмотра путешествий других пользователей введите его имя и нажмите кнопку "Поиск"</p>
       <form method="GET">
         <input
           type="search"
@@ -17,12 +17,15 @@
         />
         <button class="search_btn" type="submit">Поиск</button>
         <button class="back_btn" type="submit">Вернуться к своей карте</button>
-        <p>Отметки пользователя: {{ user_context }}</p>
+        <p style="margin:10px 0">Отметки пользователя: {{ user_context }}</p>
       </form>
-      <a href="{% url 'users_app:logout' %}">Выйти</a>
-    {% for user in users_list %}
-    <div>{{ user.username }}</div>
-    {% endfor %}
+    <p>Список пользователей:</p>
+    <div class="user_list">
+        {% for user, count in users_list %}
+                <div >{{ user }} &ensp; — &ensp; {{ count }}</div>
+        {% endfor %}
+    </div>
+    <a href="{% url 'users_app:logout' %}">Выйти</a>
     </header>
 
     <div id="map">
