@@ -63,6 +63,7 @@ console.log(getCookie('csrftoken'))
 async function addMarker(coordinates) {
   L.marker([coordinates.lat, coordinates.lng], { icon: myIcon, }).addTo(map)
    makeRequest('/', 'POST', JSON.stringify({'lat': coordinates.lat}))
+
 //  let response = await fetch('http://127.0.0.1:8000/', {
 //    method: 'POST',
 //    headers: {
