@@ -87,6 +87,7 @@ function addMarker(form, coordinates, map) {
         'title': markTitle,
         'description': markDescription,
         'sources': sourcesMarkArray
+        'actionType': 'addingMark'
     }
     // Создание маркера
     L.marker([coordinates.lat, coordinates.lng], {icon:myIcon}).addTo(map)
