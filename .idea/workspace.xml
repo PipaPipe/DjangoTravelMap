@@ -5,9 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="a7f87b94-b4df-4f96-a571-b56f5be8215c" name="Changes" comment="Настроил в моделях внешние ключи + настроил нормальное отображение интерфейса(в стилях закомментил body: display flex)">
-      <change afterPath="$PROJECT_DIR$/main/static/img/Без имени-1.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/main/templates/main/index2.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_27_03_2024_19_56__Changes_.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_27_03_2024_19_56__Changes_.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_27_03_2024_20_00__Changes_.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_27_03_2024_20_00__Changes_.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/main/models.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main/static/js/script.js" beforeDir="false" afterPath="$PROJECT_DIR$/main/static/js/script.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main/templates/main/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/main/templates/main/index.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/main/views.py" afterDir="false" />
@@ -56,7 +57,7 @@
     &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;git-widget-placeholder&quot;: &quot;main&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/prog/DjangoTravelMap1&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/prog/DjangoTravelMap/manage.py&quot;,
     &quot;settings.editor.selected.configurable&quot;: &quot;com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable&quot;
   }
 }</component>
@@ -66,13 +67,35 @@
       <recent name="C:\prog\DjangoTravelMap1\main\static\img" />
     </key>
   </component>
-  <component name="RunManager">
+  <component name="RunManager" selected="Python.site1">
+    <configuration name="debug" type="PythonConfigurationType" factoryName="Python">
+      <module name="DjangoTravelMap" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="SDK_NAME" value="C:\ProgramData\anaconda3" />
+      <option name="WORKING_DIRECTORY" value="C:\prog\DjangoTravelMap" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/manage.py" />
+      <option name="PARAMETERS" value="runserver" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="true" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
     <configuration name="site1" type="PythonConfigurationType" factoryName="Python">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
       <option name="SDK_HOME" value="" />
       <option name="SDK_NAME" value="Python 3.10" />
-      <option name="WORKING_DIRECTORY" value="C:\prog\DjangoTravelMap1" />
+      <option name="WORKING_DIRECTORY" value="C:\prog\DjangoTravelMap" />
       <option name="IS_MODULE_SDK" value="false" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
@@ -86,6 +109,10 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
+    <list>
+      <item itemvalue="Python.site1" />
+      <item itemvalue="Python.debug" />
+    </list>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
