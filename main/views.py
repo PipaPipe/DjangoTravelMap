@@ -48,9 +48,8 @@ class FetchHandler(View):
         marks = list(Mark.objects.filter(user_id=curr_user).values('latitude', 'longitude', 'content_id',
                                                                               'user_id'))
         like_count = Like.objects.filter(content_id=content[0]["id"]).count()
-        # print(*content, sep='\n')
-        # print(content[0]["id"])
-        # print(like_count)
+
+
 
         context = {
             'marks': marks,
@@ -70,6 +69,7 @@ class FetchHandler(View):
     def post(self, request):
         # Получаем значения из ответа
         values = json.loads(request.body.decode('utf-8'))
+
         user = get_user(request)
 
         # Если POST-запрос для лайка, то ..., иначе POST-запрос для выставления метки
@@ -87,18 +87,36 @@ class FetchHandler(View):
             for source in values['sources']:
                 Photo.objects.create(photo=source, content_id=content)
             Mark.objects.create(latitude=values['lat'], longitude=values['lng'], user_id=user, content_id=content)
+
         print('Выполнение POST-запроса')
 
         return JsonResponse({'val': 'data'}, status=200)
         # print(f)
         # return JsonResponse()
 
+    def points_adding(request):
+        values = json.loads(request.body.decode('utf-8'))
+        if values['actionType'] is 'addingMark':
+            pass
+        elif values['actionType'] is 'addingLike':
+            pass
+
+    def check_achievement(self) -> bool:
+        pass
+
+    def raising_user_level(self):
+        pass
+
+    def adding_achievement_for_user(self):
+        pass
+
 
 class Search(ListView):
     template_name = 'templates/index.html'
+
     def get_queryset(self):
         print(self.request.GET.get('user_search'))
-        #user = get_user()
+        # user = get_user()
         return Mark.objects.filter(user_id=self.request.GET.get('user_search'))
 
     def get_context_data(self, *, object_list=None, **kwargs):
