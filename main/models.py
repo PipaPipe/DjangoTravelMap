@@ -30,6 +30,7 @@ class Mark(models.Model):
 class Content(models.Model):
     title = models.CharField('Название', max_length=50)
     description = models.TextField('Описание')
+    likes_count = models.IntegerField('Кол-во лайков')
 
     objects = models.Manager()
 
@@ -73,6 +74,8 @@ class Achievements(models.Model):
 class Levels(models.Model):
     points_for_level = models.IntegerField('Кол-во очков уровня')
 
+    objects = models.Manager()
+
     def __str__(self):
         return f'Кол-во очков уровня: {self.points_for_level}'
 
@@ -88,6 +91,8 @@ class UsersAchievements(models.Model):
         on_delete=models.CASCADE
     )
 
+    objects = models.Manager()
+
     def __str__(self):
         return f'Пользователь: {self.user_id}, Достижения: {self.achievement_id}'
 
@@ -100,5 +105,23 @@ class UsersLevel(models.Model):
     level = models.IntegerField('Уровень пользователя')
     total_points = models.IntegerField('Очки пользователя')
 
+    objects = models.Manager()
+
     def __str__(self):
         return f'Пользователь: {self.user_id}, Текущий уровень: {self.level}'
+
+
+class Likes(models.Model):
+    content_id = models.ForeignKey(
+        verbose_name='ID контента',
+        to='Content',
+        on_delete=models.CASCADE)
+    user_id = models.ForeignKey(
+        verbose_name='ID пользователя',
+        to='auth.user',
+        on_delete=models.CASCADE)
+
+    objects = models.Manager()
+
+    def __str__(self):
+        return f'ID Пользователя: {self.user_id}, ID Контента: {self.content_id}'

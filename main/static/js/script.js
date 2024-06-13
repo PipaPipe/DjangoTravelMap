@@ -169,12 +169,9 @@ function addPopupOnClick(map){
 //}).addTo(map)
 
 function fillContent(marker, title, description, photos){
-let photoArray = ""
-
-
-
-for (let photo of photos){
-    photoArray += `<div class="photo-block"><div class="preview-container"><div class="image-container"><img src='${photo}'></div></div></div>`
+    let photoArray = ""
+    for (let photo of photos){
+        photoArray += `<div class="photo-block"><div class="preview-container"><div class="image-container"><img src='${photo}'></div></div></div>`
 //    const div1 = document.createElement('div')
 //    const div2 = document.createElement('div')
 //    const div3 = document.createElement('div')
@@ -193,7 +190,7 @@ for (let photo of photos){
 //    console.log(b)
 }
 
-    let fillContent = ((name, description, photoArray) => {
+let fillContent = ((name, description, photoArray) => {
       let content = `<h2 class="popup-title">${name}</h2>
       <div class="photo-section">
         ${photoArray}
