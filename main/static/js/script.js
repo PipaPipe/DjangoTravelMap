@@ -167,14 +167,35 @@ let fillContent = ((name, description, photoArray) => {
         ${photoArray}
       </div>
       <div class="content_description">${description}</div>
-      </div><button id='like_button'onclick="addLike(${content_id})">ЛАЙК ${content_id}</button>
-      <div>Лайков = ${like_count}</div>
+      <div class="likes-block">
+        <span class="likes-count">${like_count}</span>
+        <button class="image-button" id='like_button'onclick="addLike(${content_id})"></button>
+      </div>
       </div>`
       return content
     })
     marker.bindPopup(fillContent(title, description, photoArray))
 }
 
+const likes = document.querySelectorAll(".image-button");
+const likes_counter = document.querySelector(".likes-count");
+//let likesCount = 0;
+//console.log(likesCount)
+likes.forEach((like) => {
+    like.onclick = function () {
+        console.log("like on click")
+        if (
+        event.target.style.backgroundImage == 'url("../img/Like_Heart.png")' || event.target.style.backgroundImage == ''
+        ) {
+            event.target.style.backgroundImage = 'url("../img/1.png")';
+            likes_counter++;
+        } else {
+            event.target.style.backgroundImage = 'url("../img/Like_Heart.png")';
+            likes_counter--;
+        }
+        likes_counter.textContent = likesCount
+    };
+});
 
 
 //singleMarker.bindPopup(fillContent('Маркер 1', 'Какой-то текст с описанием'))

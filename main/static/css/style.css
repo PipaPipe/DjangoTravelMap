@@ -457,6 +457,34 @@ justify-content: space-between;
 flex-wrap: wrap;
 }
 
+.image-button {
+margin-left: 10px;
+cursor: pointer;
+width: 45px;
+height: 42px;
+border: none;
+background-color: white;
+background-image: url('../img/Like_Heart.png');
+background-size: cover;
+}
+
+.image-button:hover {
+opacity: 0.8;
+}
+
+.image-button:active {
+transform: scale(0.95);
+}
+
+.likes-block {
+display: flex;
+align-items: center;
+}
+
+.likes-count {
+font-size: 30px;
+}
+
 .content_description {
 margin-top: 10px;
 font-size: 14px;
