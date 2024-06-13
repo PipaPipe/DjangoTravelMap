@@ -86,8 +86,11 @@ function addMarker(form, coordinates, map) {
         'lng': coordinates.lng,
         'title': markTitle,
         'description': markDescription,
-        'sources': sourcesMarkArray
+
+        'sources': sourcesMarkArray,
+        'is_like': 0
         'actionType': 'addingMark'
+
     }
     // Создание маркера
     L.marker([coordinates.lat, coordinates.lng], {icon:myIcon}).addTo(map)
@@ -95,7 +98,13 @@ function addMarker(form, coordinates, map) {
     map.closePopup()
 }
 
-
+function addLike(content_id) {
+     likeData={
+        'content_id': content_id,
+        'is_like': 1
+    }
+    makeRequest('/map', 'POST', JSON.stringify(likeData))
+}
 
 // Добавление маркера по нажатию ПКМ. Всплывает модальное окно для заполнения всей инфы по данному месту.
 // При нажатии кнопки "Добавить место" данные должны улетать на бэк. 
@@ -142,52 +151,14 @@ function addPopupOnClick(map){
 
 
 
-//document.getElementById('myForm').addEventListener('submit', function(event) {
-//    event.preventDefault();
-//
-//    var xhr = new XMLHttpRequest();
-//    var url = "/";
-//    xhr.open("POST", url, true);
-//    xhr.setRequestHeader("Content-Type", "application/json");
-//
-//    var formData = new FormData(this);
-//    xhr.send(new URLSearchParams(formData));
-//
-//    xhr.onreadystatechange = function () {
-//        if (xhr.readyState === 4 && xhr.status === 200) {
-//            console.log(JSON.parse(xhr.responseText));
-//        }
-//    };
-//});
-// 2 Тестовых предзаполненных маркера
-//var singleMarker = L.marker([28.3949, 84.124], {
-//  icon: myIcon,
-//}).addTo(map)
-//
-//var secondMarker = L.marker([60.3949, 0.124], {
-//  icon: myIcon,
-//}).addTo(map)
 
-function fillContent(marker, title, description, photos){
+
+
+function fillContent(marker, title, description, photos, coordinates, content_id, like_count){
     let photoArray = ""
     for (let photo of photos){
         photoArray += `<div class="photo-block"><div class="preview-container"><div class="image-container"><img src='${photo}'></div></div></div>`
-//    const div1 = document.createElement('div')
-//    const div2 = document.createElement('div')
-//    const div3 = document.createElement('div')
-//    div1.appendChild(div2)
-//    div2.appendChild(div3)
-//    div1.classList.add("photo-block")
-//    div2.classList.add("preview-container")
-//    div3.classList.add("image-container")
-//
-//    let val = document.createElement('img')
-//    val.setAttribute("src", photo)
-//
-//    div3.appendChild(val)
-//    photoArray += div1
-//    let b = ``
-//    console.log(b)
+
 }
 
 let fillContent = ((name, description, photoArray) => {
@@ -196,12 +167,13 @@ let fillContent = ((name, description, photoArray) => {
         ${photoArray}
       </div>
       <div class="content_description">${description}</div>
+      </div><button id='like_button'onclick="addLike(${content_id})">ЛАЙК ${content_id}</button>
+      <div>Лайков = ${like_count}</div>
       </div>`
       return content
     })
-  marker.bindPopup(fillContent(title, description, photoArray))
+    marker.bindPopup(fillContent(title, description, photoArray))
 }
-
 
 
 

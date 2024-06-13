@@ -11,7 +11,6 @@ class FetchHandler(View):
     def get(self, request):
         all_users = get_user_model()
         all_users = list(all_users.objects.values())
-
         all_marks = list(Mark.objects.values())
 
         user_marks_count = {}
@@ -47,14 +46,20 @@ class FetchHandler(View):
         photos = list(Photo.objects.filter(content_id__in=content_indexes).values('id', 'photo', 'content_id'))
 
         marks = list(Mark.objects.filter(user_id=curr_user).values('latitude', 'longitude', 'content_id',
-                                                                   'user_id'))
+                                                                              'user_id'))
+        like_count = Like.objects.filter(content_id=content[0]["id"]).count()
+
+
+
         context = {
             'marks': marks,
             'content': content,
             'photos': photos,
             'user_context': user_context,
             'users_list': user_marks_count.items(),
+            'like_count': like_count
         }
+        # print(content[0]["id"])
 
         # if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
         #     return JsonResponse({'Uknown': 1})
@@ -64,13 +69,24 @@ class FetchHandler(View):
     def post(self, request):
         # Получаем значения из ответа
         values = json.loads(request.body.decode('utf-8'))
-        print(values)
+
         user = get_user(request)
-        #
-        content = Content.objects.create(title=values['title'], description=values['description'])
-        for source in values['sources']:
-            Photo.objects.create(photo=source, content_id=content)
-        Mark.objects.create(latitude=values['lat'], longitude=values['lng'], user_id=user, content_id=content)
+
+        # Если POST-запрос для лайка, то ..., иначе POST-запрос для выставления метки
+        if values['is_like']:
+            cnt_id = values['content_id']
+            print(cnt_id)
+            content_obj_id = Content.objects.get(pk=cnt_id) # айди должен принадлежать модели, а не быть int
+            repeat_like = Like.objects.filter(content_id=content_obj_id, user_id=user).count()
+            if repeat_like < 1:
+                Like.objects.create(content_id=content_obj_id, user_id=user)
+            else:
+                print("Нельзя ставить 2 лайка")
+        else:
+            content = Content.objects.create(title=values['title'], description=values['description'])
+            for source in values['sources']:
+                Photo.objects.create(photo=source, content_id=content)
+            Mark.objects.create(latitude=values['lat'], longitude=values['lng'], user_id=user, content_id=content)
 
         print('Выполнение POST-запроса')
 
