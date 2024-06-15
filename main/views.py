@@ -80,8 +80,10 @@ class FetchHandler(View):
             repeat_like = Like.objects.filter(content_id=content_obj_id, user_id=user).count()
             if repeat_like < 1:
                 Like.objects.create(content_id=content_obj_id, user_id=user)
+                print("Лайк поставлен")
             else:
-                print("Нельзя ставить 2 лайка")
+                Like.objects.filter(content_id=content_obj_id, user_id=user).delete()
+                print("Лайк отменён")
         else:
             content = Content.objects.create(title=values['title'], description=values['description'])
             for source in values['sources']:
