@@ -1,5 +1,6 @@
 import json
 
+from django.db.models import Count
 from django.shortcuts import render
 from django.views.generic import View, ListView
 from django.http import JsonResponse
@@ -47,9 +48,8 @@ class FetchHandler(View):
 
         marks = list(Mark.objects.filter(user_id=curr_user).values('latitude', 'longitude', 'content_id',
                                                                               'user_id'))
-        like_count = Like.objects.filter(content_id=content[0]["id"]).count()
 
-
+        likes = list(Like.objects.values('content_id').annotate(dcount=Count('content_id')))
 
         context = {
             'marks': marks,
@@ -57,7 +57,7 @@ class FetchHandler(View):
             'photos': photos,
             'user_context': user_context,
             'users_list': user_marks_count.items(),
-            'like_count': like_count
+            'likes': likes
         }
         # print(content[0]["id"])
 

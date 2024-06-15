@@ -42,7 +42,7 @@
     {{ marks|json_script:"mark-json"}}
     {{ content|json_script:"content-json"}}
     {{ photos|json_script:"photos-json"}}
-    {{ like_count|json_script:"like-json"}}
+    {{ likes|json_script:"like-json"}}
 
     {% else %}
         <a href="{% url 'main:users_app:auth' %}">Авторизация</a>
@@ -72,6 +72,7 @@
             let photoArray = []
             let coordinates = []
             let content_id
+            let like = 0
             coordinates = [mark['latitude'], mark['longitude']]
             var marker = L.marker(coordinates, {icon: myIcon}).addTo(map)
             for (let elem of content){
@@ -83,12 +84,16 @@
                 }
             }
             for (let elem of photos) {
-
                 if (mark['content_id'] == elem['content_id']) {
                     photoArray.push(elem['photo'])
                 }
             }
-            fillContent(marker, title, descr, photoArray, coordinates, content_id, likes)
+            for (let elem of likes) {
+                if (mark['content_id'] == elem['content_id']) {
+                    like = elem['dcount']
+                }
+            }
+            fillContent(marker, title, descr, photoArray, coordinates, content_id, like)
         }
         addPopupOnClick(map)
     });

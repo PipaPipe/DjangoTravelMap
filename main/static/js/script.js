@@ -154,54 +154,68 @@ function addPopupOnClick(map){
 
 
 
-function fillContent(marker, title, description, photos, coordinates, content_id, like_count){
+function fillContent(marker, title, description, photos, coordinates, content_id, likes_count){
     let photoArray = ""
     for (let photo of photos){
         photoArray += `<div class="photo-block"><div class="preview-container"><div class="image-container"><img src='${photo}'></div></div></div>`
 
-}
+    }
 
-let fillContent = ((name, description, photoArray) => {
-      let content = `<h2 class="popup-title">${name}</h2>
-      <div class="photo-section">
-        ${photoArray}
-      </div>
-      <div class="content_description">${description}</div>
-      <div class="likes-block">
-        <span class="likes-count">${like_count}</span>
-        <button class="image-button" id='like_button'onclick="addLike(${content_id})"></button>
-      </div>
-      </div>`
-      return content
-    })
+    let fillContent = ((name, description, photoArray) => {
+          let content = `<h2 class="popup-title">${name}</h2>
+          <div class="photo-section">
+            ${photoArray}
+          </div>
+          <div class="content_description">${description}</div>
+          <div class="likes-block">
+            <span class="likes-count" id="likes_count">${likes_count}</span>
+            <button class="image-button" id='like_button'onclick="addLike(${content_id})"></button>
+          </div>
+          </div>`
+          return content
+        })
     marker.bindPopup(fillContent(title, description, photoArray))
+
+
+    const likes = document.querySelectorAll(".image-button");
+    const likes_counter = document.querySelector(".likes-count");
+//
+//    const likes = document.getElementById('#like_button');
+//    const likes_counter = document.getElementById("#likes-count");
+
+//    const likes = document.getElementsByClassName("image-button");
+//    const likes_counter = document.getElementsByClassName(".likes-count");
+
+//    console.log("asdasads")
+//    console.log(fillContent(name, description, photoArray))
+//    console.log("asdasads")
+    console.log(likes)
+    console.log(likes_counter)
+//    console.log(likes.id)
+//    console.log(likes_counter.id)
+
+    likes.forEach((like) => {
+        console.log("поехали")
+        like.onclick = function () {
+            console.log("like on click")
+            if (
+            event.target.style.backgroundImage == 'url("../img/Like_Heart.png")' || event.target.style.backgroundImage == ''
+            ) {
+                event.target.style.backgroundImage = 'url("../img/1.png")';
+                likes_counter++;
+            } else {
+                event.target.style.backgroundImage = 'url("../img/Like_Heart.png")';
+                likes_counter--;
+            }
+            likes_counter.textContent = likesCount
+        };
+    });
 }
 
-const likes = document.querySelectorAll(".image-button");
-const likes_counter = document.querySelector(".likes-count");
-//let likesCount = 0;
-//console.log(likesCount)
-likes.forEach((like) => {
-    like.onclick = function () {
-        console.log("like on click")
-        if (
-        event.target.style.backgroundImage == 'url("../img/Like_Heart.png")' || event.target.style.backgroundImage == ''
-        ) {
-            event.target.style.backgroundImage = 'url("../img/1.png")';
-            likes_counter++;
-        } else {
-            event.target.style.backgroundImage = 'url("../img/Like_Heart.png")';
-            likes_counter--;
-        }
-        likes_counter.textContent = likesCount
-    };
-});
+    //singleMarker.bindPopup(fillContent('Маркер 1', 'Какой-то текст с описанием'))
+    //
+    //secondMarker.bindPopup(fillContent('Маркер 2', 'Какой-то текст с описанием'));
 
-
-//singleMarker.bindPopup(fillContent('Маркер 1', 'Какой-то текст с описанием'))
-//
-//secondMarker.bindPopup(fillContent('Маркер 2', 'Какой-то текст с описанием'));
-
-// secondMarker.setPopupContent(`<p>LOLODFDF</p>`) записать html в popup
-// console.log(secondMarker.getPopup().getContent()) получить html из popup
-// console.log(singleMarker.getLatLng());
+    // secondMarker.setPopupContent(`<p>LOLODFDF</p>`) записать html в popup
+    // console.log(secondMarker.getPopup().getContent()) получить html из popup
+    // console.log(singleMarker.getLatLng());
