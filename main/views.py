@@ -96,9 +96,9 @@ class FetchHandler(View):
 
     def points_adding(request):
         values = json.loads(request.body.decode('utf-8'))
-        if values['actionType'] is 'addingMark':
+        if values['actionType'] == 'addingMark':
             pass
-        elif values['actionType'] is 'addingLike':
+        elif values['actionType'] == 'addingLike':
             pass
 
     def check_achievement(self) -> bool:

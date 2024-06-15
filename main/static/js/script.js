@@ -88,7 +88,7 @@ function addMarker(form, coordinates, map) {
         'description': markDescription,
 
         'sources': sourcesMarkArray,
-        'is_like': 0
+        'is_like': 0,
         'actionType': 'addingMark'
 
     }

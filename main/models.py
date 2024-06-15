@@ -30,7 +30,6 @@ class Mark(models.Model):
 class Content(models.Model):
     title = models.CharField('Название', max_length=50)
     description = models.TextField('Описание')
-    likes_count = models.IntegerField('Кол-во лайков')
 
     objects = models.Manager()
 
