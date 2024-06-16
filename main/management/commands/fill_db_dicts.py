@@ -8,10 +8,10 @@ levels = [
         'points_for_level': 10
     },
     {
-        'points_for_level': 20
+        'points_for_level': 30
     },
     {
-        'points_for_level': 30
+        'points_for_level': 60
     }
 ]
 

@@ -64,7 +64,6 @@ class FetchHandler(View):
     def post(self, request):
         # Получаем значения из ответа
         values = json.loads(request.body.decode('utf-8'))
-        print(values)
         user = get_user(request)
         #
         content = Content.objects.create(title=values['title'], description=values['description'])
@@ -72,27 +71,78 @@ class FetchHandler(View):
             Photo.objects.create(photo=source, content_id=content)
         Mark.objects.create(latitude=values['lat'], longitude=values['lng'], user_id=user, content_id=content)
 
-        print('Выполнение POST-запроса')
 
+        self.points_adding(request)
         return JsonResponse({'val': 'data'}, status=200)
         # print(f)
         # return JsonResponse()
 
-    def points_adding(request):
+    def points_adding(self, request):
         values = json.loads(request.body.decode('utf-8'))
-        if values['actionType'] is 'addingMark':
+        print(values)
+        curr_user = get_user(request)
+        if values['actionType'] == 'addingMark':
+            marks_number = len(list(Mark.objects.filter(user_id=curr_user).values()))
+
+            if marks_number >= 5:
+                points = self._adding_achievement_for_user(request, 2)
+                if points is not None:
+                    self._raising_user_level(request, points)
+        elif values['actionType'] == 'addingLike':
             pass
-        elif values['actionType'] is 'addingLike':
-            pass
+            # all_likes_count = len(list(Like.objects.filter(user_id=curr_user)))
+            # if all_likes_count >= 5:
+            #     points = self._adding_achievement_for_user(request, 1)
+            #     if points is not None:
+            #         self._raising_user_level(request, points)
+            # user_content_id = Mark.objects.filter(user_id=curr_user).values('content_id_id')
+            # user_content = [elem['content_id_id'] for elem in user_content_id]
+            # other_likes = len(list(Like.objects.filter(content_id__in=user_content).values()))
+            # if other_likes >=5:
+            #     points = self._adding_achievement_for_user(request, 3)
+            #     if points is not None:
+            #         self._raising_user_level(request, points)
 
-    def check_achievement(self) -> bool:
-        pass
 
-    def raising_user_level(self):
-        pass
 
-    def adding_achievement_for_user(self):
-        pass
+
+
+    def _check_achievement(self, request, achievement_id) -> bool:
+        current_user = get_user(request)
+        user_achievements = list(UsersAchievements.objects.filter(user_id=current_user).values('achievement_id_id'))
+        user_ach_list = []
+        for ach in user_achievements:
+            user_ach_list.append(ach['achievement_id_id'])
+
+        if achievement_id not in user_ach_list:
+            print("равно пошел нахуй")
+            return True
+        return False
+
+    def _raising_user_level(self, request, points):
+        current_user = get_user(request)
+        if len(list(UsersLevel.objects.filter(user_id=current_user).values())) == 0:
+            UsersLevel.objects.create(user_id=current_user, total_points=0, level=0)
+        # print(UsersLevel.objects.filter(user_id=current_user).values('total_points')[0]['total_points'])
+        user_points = list(UsersLevel.objects.filter(user_id=current_user).values('total_points'))[0]['total_points'] + points
+
+        num = UsersLevel.objects.filter(user_id=current_user).update(total_points=user_points)
+
+        new_level = list(Levels.objects.filter(points_for_level=points).values())[0]['id']
+        user_level = UsersLevel.objects.filter(user_id=current_user).update(level=new_level)
+
+
+
+    def _adding_achievement_for_user(self, request, achievement_id):
+        achievement_check = self._check_achievement(request, achievement_id)
+        if achievement_check:
+            achievement = Achievements.objects.get(id=achievement_id)
+            print(get_user(request))
+            UsersAchievements.objects.create(user_id=get_user(request), achievement_id=achievement)
+            points = Achievements.objects.filter(id=achievement_id).values('points')
+            points = list(points)[0]['points']
+            return points
+        return None
 
 
 class Search(ListView):

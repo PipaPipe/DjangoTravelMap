@@ -86,7 +86,7 @@ function addMarker(form, coordinates, map) {
         'lng': coordinates.lng,
         'title': markTitle,
         'description': markDescription,
-        'sources': sourcesMarkArray
+        'sources': sourcesMarkArray,
         'actionType': 'addingMark'
     }
     // Создание маркера

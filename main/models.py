@@ -4,7 +4,7 @@ from django.db import models
 class Mark(models.Model):
     latitude = models.FloatField('Широта')
     longitude = models.FloatField('Долгота')
-
+    # is_approved = models.BooleanField('На согласовании', default=False)
     user_id = models.ForeignKey(
         verbose_name='ID пользователя',
         to='auth.user',
@@ -30,7 +30,6 @@ class Mark(models.Model):
 class Content(models.Model):
     title = models.CharField('Название', max_length=50)
     description = models.TextField('Описание')
-    likes_count = models.IntegerField('Кол-во лайков')
 
     objects = models.Manager()
 
@@ -68,7 +67,7 @@ class Achievements(models.Model):
     objects = models.Manager()
 
     def __str__(self):
-        return f'{self.name}'
+        return f'Название {self.name}'
 
 
 class Levels(models.Model):
@@ -111,7 +110,7 @@ class UsersLevel(models.Model):
         return f'Пользователь: {self.user_id}, Текущий уровень: {self.level}'
 
 
-class Likes(models.Model):
+class Like(models.Model):
     content_id = models.ForeignKey(
         verbose_name='ID контента',
         to='Content',
