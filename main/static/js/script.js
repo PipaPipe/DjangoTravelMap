@@ -153,11 +153,10 @@ function addPopupOnClick(map){
 
 
 
-function fillContent(marker, title, description, photos, coordinates, content_id, likes_count){
+function fillContent(marker, title, description, photos, coordinates, content_id, content_like){
     let photoArray = ""
     for (let photo of photos){
         photoArray += `<div class="photo-block"><div class="preview-container"><div class="image-container"><img src='${photo}'></div></div></div>`
-
     }
 
     let fillContent = ((name, description, photoArray) => {
@@ -167,7 +166,7 @@ function fillContent(marker, title, description, photos, coordinates, content_id
           </div>
           <div class="content_description">${description}</div>
           <div class="likes-block">
-            <span class="likes-count" id="likes_count">${likes_count}</span>
+            <span class="likes-count" id="content_like">${content_like}</span>
             <button class="image-button" id='like_button'onclick="addLike(${content_id})"></button>
           </div>
           </div>`
@@ -178,7 +177,7 @@ function fillContent(marker, title, description, photos, coordinates, content_id
 
     const likes = document.querySelectorAll(".image-button");
     const likes_counter = document.querySelector(".likes-count");
-//
+
 //    const likes = document.getElementById('#like_button');
 //    const likes_counter = document.getElementById("#likes-count");
 
