@@ -40,6 +40,25 @@ class Content(models.Model):
         verbose_name = 'Контент'  # Название таблицы в единственном числе
         verbose_name_plural = 'Контент'  # Название таблицы в множественном числе
 
+class Like(models.Model):
+    content_id = models.ForeignKey(
+        verbose_name='ID контента',
+        to='Content',
+        on_delete=models.CASCADE)
+
+    user_id = models.ForeignKey(
+        verbose_name='ID пользователя',
+        to='auth.user',
+        on_delete=models.CASCADE)
+
+    objects = models.Manager()
+
+    # def __str__(self):
+    #     return f'{self.title}'
+
+    class Meta:
+        verbose_name = 'Лайк'  # Название таблицы в единственном числе
+        verbose_name_plural = 'Лайки'  # Название таблицы в множественном числе
 
 class Photo(models.Model):
     photo = models.TextField('Фото')

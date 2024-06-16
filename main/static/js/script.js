@@ -87,6 +87,7 @@ function addMarker(form, coordinates, map) {
         'title': markTitle,
         'description': markDescription,
         'sources': sourcesMarkArray,
+        'is_like': 0,
         'actionType': 'addingMark'
     }
     // Создание маркера
@@ -95,7 +96,13 @@ function addMarker(form, coordinates, map) {
     map.closePopup()
 }
 
-
+function addLike(content_id) {
+     likeData={
+        'content_id': content_id,
+        'is_like': 1
+    }
+    makeRequest('/map', 'POST', JSON.stringify(likeData))
+}
 
 // Добавление маркера по нажатию ПКМ. Всплывает модальное окно для заполнения всей инфы по данному месту.
 // При нажатии кнопки "Добавить место" данные должны улетать на бэк. 
@@ -142,73 +149,71 @@ function addPopupOnClick(map){
 
 
 
-//document.getElementById('myForm').addEventListener('submit', function(event) {
-//    event.preventDefault();
-//
-//    var xhr = new XMLHttpRequest();
-//    var url = "/";
-//    xhr.open("POST", url, true);
-//    xhr.setRequestHeader("Content-Type", "application/json");
-//
-//    var formData = new FormData(this);
-//    xhr.send(new URLSearchParams(formData));
-//
-//    xhr.onreadystatechange = function () {
-//        if (xhr.readyState === 4 && xhr.status === 200) {
-//            console.log(JSON.parse(xhr.responseText));
-//        }
-//    };
-//});
-// 2 Тестовых предзаполненных маркера
-//var singleMarker = L.marker([28.3949, 84.124], {
-//  icon: myIcon,
-//}).addTo(map)
-//
-//var secondMarker = L.marker([60.3949, 0.124], {
-//  icon: myIcon,
-//}).addTo(map)
 
-function fillContent(marker, title, description, photos){
+
+
+function fillContent(marker, title, description, photos, coordinates, content_id, likes_count){
     let photoArray = ""
     for (let photo of photos){
         photoArray += `<div class="photo-block"><div class="preview-container"><div class="image-container"><img src='${photo}'></div></div></div>`
-//    const div1 = document.createElement('div')
-//    const div2 = document.createElement('div')
-//    const div3 = document.createElement('div')
-//    div1.appendChild(div2)
-//    div2.appendChild(div3)
-//    div1.classList.add("photo-block")
-//    div2.classList.add("preview-container")
-//    div3.classList.add("image-container")
+
+    }
+
+    let fillContent = ((name, description, photoArray) => {
+          let content = `<h2 class="popup-title">${name}</h2>
+          <div class="photo-section">
+            ${photoArray}
+          </div>
+          <div class="content_description">${description}</div>
+          <div class="likes-block">
+            <span class="likes-count" id="likes_count">${likes_count}</span>
+            <button class="image-button" id='like_button'onclick="addLike(${content_id})"></button>
+          </div>
+          </div>`
+          return content
+        })
+    marker.bindPopup(fillContent(title, description, photoArray))
+
+
+    const likes = document.querySelectorAll(".image-button");
+    const likes_counter = document.querySelector(".likes-count");
 //
-//    let val = document.createElement('img')
-//    val.setAttribute("src", photo)
-//
-//    div3.appendChild(val)
-//    photoArray += div1
-//    let b = ``
-//    console.log(b)
+//    const likes = document.getElementById('#like_button');
+//    const likes_counter = document.getElementById("#likes-count");
+
+//    const likes = document.getElementsByClassName("image-button");
+//    const likes_counter = document.getElementsByClassName(".likes-count");
+
+//    console.log("asdasads")
+//    console.log(fillContent(name, description, photoArray))
+//    console.log("asdasads")
+    console.log(likes)
+    console.log(likes_counter)
+//    console.log(likes.id)
+//    console.log(likes_counter.id)
+
+    likes.forEach((like) => {
+        console.log("поехали")
+        like.onclick = function () {
+            console.log("like on click")
+            if (
+            event.target.style.backgroundImage == 'url("../img/Like_Heart.png")' || event.target.style.backgroundImage == ''
+            ) {
+                event.target.style.backgroundImage = 'url("../img/1.png")';
+                likes_counter++;
+            } else {
+                event.target.style.backgroundImage = 'url("../img/Like_Heart.png")';
+                likes_counter--;
+            }
+            likes_counter.textContent = likesCount
+        };
+    });
 }
 
-let fillContent = ((name, description, photoArray) => {
-      let content = `<h2 class="popup-title">${name}</h2>
-      <div class="photo-section">
-        ${photoArray}
-      </div>
-      <div class="content_description">${description}</div>
-      </div>`
-      return content
-    })
-  marker.bindPopup(fillContent(title, description, photoArray))
-}
+    //singleMarker.bindPopup(fillContent('Маркер 1', 'Какой-то текст с описанием'))
+    //
+    //secondMarker.bindPopup(fillContent('Маркер 2', 'Какой-то текст с описанием'));
 
-
-
-
-//singleMarker.bindPopup(fillContent('Маркер 1', 'Какой-то текст с описанием'))
-//
-//secondMarker.bindPopup(fillContent('Маркер 2', 'Какой-то текст с описанием'));
-
-// secondMarker.setPopupContent(`<p>LOLODFDF</p>`) записать html в popup
-// console.log(secondMarker.getPopup().getContent()) получить html из popup
-// console.log(singleMarker.getLatLng());
+    // secondMarker.setPopupContent(`<p>LOLODFDF</p>`) записать html в popup
+    // console.log(secondMarker.getPopup().getContent()) получить html из popup
+    // console.log(singleMarker.getLatLng());
