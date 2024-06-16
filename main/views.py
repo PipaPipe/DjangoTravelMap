@@ -10,6 +10,7 @@ from .models import *
 
 class FetchHandler(View):
     def get(self, request):
+        print(request.GET.get('user_search'))
         all_users = get_user_model()
         all_users = list(all_users.objects.values())
         all_marks = list(Mark.objects.values())
@@ -42,15 +43,17 @@ class FetchHandler(View):
 
         content_list = list(Mark.objects.filter(user_id=curr_user).values('content_id'))
         content_indexes = [elem['content_id'] for elem in content_list]
-
         content = list(Content.objects.filter(id__in=content_indexes).values('id', 'title', 'description'))
         photos = list(Photo.objects.filter(content_id__in=content_indexes).values('id', 'photo', 'content_id'))
-
         marks = list(Mark.objects.filter(user_id=curr_user).values('latitude', 'longitude', 'content_id',
                                                                    'user_id'))
-
         likes = list(Like.objects.values('content_id').annotate(dcount=Count('content_id')))
 
+        # if curr_user != get_user(request).id:
+        #     marks = list(
+        #         Mark.objects.filter(user_id=curr_user, is_approved=True).values('latitude', 'longitude',
+        #                                                                         'content_id',
+        #                                                                         'user_id'))
         context = {
             'marks': marks,
             'content': content,
@@ -59,6 +62,7 @@ class FetchHandler(View):
             'users_list': user_marks_count.items(),
             'likes': likes
         }
+        print(context)
         # print(content[0]["id"])
 
         # if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
@@ -129,7 +133,6 @@ class FetchHandler(View):
             user_ach_list.append(ach['achievement_id_id'])
 
         if achievement_id not in user_ach_list:
-
             return True
         return False
 
