@@ -113,7 +113,9 @@ class FetchHandler(View):
                     self._raising_user_level(request, points)
             user_content_id = Mark.objects.filter(user_id=curr_user).values('content_id_id')
             user_content = [elem['content_id_id'] for elem in user_content_id]
-            other_likes = len(list(Like.objects.filter(content_id__in=user_content).exclude(user_id=curr_user).values()))
+            other_likes = len(list(Like.objects.filter(content_id__in=user_content).values()))
+            print(user_content_id)
+            print(other_likes)
             if other_likes >= 5:
                 points = self._adding_achievement_for_user(request, 3)
                 if points is not None:
