@@ -15,20 +15,39 @@
           type="search"
           placeholder="Поиск пользователей"
           name="user_search"
+          hidden
         />
-        <button class="search_btn" type="submit">Поиск</button>
         <button class="back_btn" type="submit">Вернуться к своей карте</button>
-
       </form>
-    <p style="margin:10px 0">Список пользователей/отметок:</p>
+    <p style="margin:10px 0">Пользователь | отметки | лайки | уровень</p>
+
     <div class="user_list">
         <table>
         {% for user, count in users_list %}
             <tr>
-                <td>{{ user }}&ensp;</td>
-                <td>{{ count }}</td>
+
+                <td>
+                    <form method="GET">
+                        <input
+                          type="search"
+                          name="user_search"
+                          value="{{ user }}"
+                          hidden
+                        />
+                        <button class="search_btn" type="submit">Перейти к {{ user }}</button>
+                        &ensp;&ensp;&ensp;
+                    </form>
+                </td>
+                <td>{{ count }}&ensp;&ensp;&ensp;&ensp;&ensp;</td>
+                <td>
+                    {% for liked_user, liked_count in user_likes %}
+                        {% if user == liked_user %}
+                            {{ liked_count }}
+                        {% endif %}
+                    {% endfor %}
+                </td>
+
             </tr>
-<!--            <div >{{ user }} &ensp; — &ensp; {{ count }}</div>-->
         {% endfor %}
         </table>
     </div>
@@ -42,7 +61,7 @@
     {{ marks|json_script:"mark-json"}}
     {{ content|json_script:"content-json"}}
     {{ photos|json_script:"photos-json"}}
-    {{ likes|json_script:"like-json"}}
+    {{ content_likes|json_script:"like-json"}}
 
     {% else %}
         <a href="{% url 'main:users_app:auth' %}">Авторизация</a>
@@ -64,7 +83,7 @@
         let marks = JSON.parse(document.getElementById('mark-json').textContent)
         let content = JSON.parse(document.getElementById('content-json').textContent)
         let photos = JSON.parse(document.getElementById('photos-json').textContent)
-        let likes = JSON.parse(document.getElementById('like-json').textContent)
+        let content_likes = JSON.parse(document.getElementById('like-json').textContent)
 
         for (let mark of marks){
             let title = ''
@@ -88,7 +107,7 @@
                     photoArray.push(elem['photo'])
                 }
             }
-            for (let elem of likes) {
+            for (let elem of content_likes) {
                 if (mark['content_id'] == elem['content_id']) {
                     like = elem['dcount']
                 }

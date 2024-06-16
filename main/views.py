@@ -6,11 +6,12 @@ from django.views.generic import View, ListView
 from django.http import JsonResponse
 from django.contrib.auth import get_user, get_user_model
 from .models import *
+import pandas as pd
 
 
 class FetchHandler(View):
     def get(self, request):
-        print(request.GET.get('user_search'))
+        # print(request.GET.get('user_search'))
         all_users = get_user_model()
         all_users = list(all_users.objects.values())
         all_marks = list(Mark.objects.values())
@@ -28,9 +29,11 @@ class FetchHandler(View):
         # user_marks_count_list.reverse()
         # user_marks_count = dict(user_marks_count_list)
         # print(user_marks_count)
+        # print(f'{user_marks_count = }')
         user_marks_count = list(sorted(user_marks_count.items(), key=lambda x: x[1]))
         user_marks_count.reverse()
         user_marks_count = dict(user_marks_count)
+        # print(f'{user_marks_count = }')
 
         user_context = request.user
         curr_user = request.user.id
@@ -47,22 +50,26 @@ class FetchHandler(View):
         photos = list(Photo.objects.filter(content_id__in=content_indexes).values('id', 'photo', 'content_id'))
         marks = list(Mark.objects.filter(user_id=curr_user).values('latitude', 'longitude', 'content_id',
                                                                    'user_id'))
-        likes = list(Like.objects.values('content_id').annotate(dcount=Count('content_id')))
+        content_likes = list(Like.objects.values('content_id').annotate(dcount=Count('content_id')))
 
         # if curr_user != get_user(request).id:
         #     marks = list(
         #         Mark.objects.filter(user_id=curr_user, is_approved=True).values('latitude', 'longitude',
         #                                                                         'content_id',
         #                                                                         'user_id'))
+        user_likes = self.get_liked_users()
+
         context = {
             'marks': marks,
             'content': content,
             'photos': photos,
             'user_context': user_context,
             'users_list': user_marks_count.items(),
-            'likes': likes
+            'content_likes': content_likes,
+            'user_likes': user_likes.items()
         }
-        print(context)
+        # print("content = ")
+        # print(*context, sep='\n')
         # print(content[0]["id"])
 
         # if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
@@ -97,6 +104,60 @@ class FetchHandler(View):
         return JsonResponse({'val': 'data'}, status=200)
         # print(f)
         # return JsonResponse()
+
+    def get_liked_users(self):
+
+        # user_likes1 = list(
+        #     Like.objects
+        #     .values('user_id_id')
+        #     .annotate(count=Count('user_id_id'))
+        # )
+        # user_likes2 = (
+        #     Like.objects
+        #     .select_related('content_id')
+        #     .values('user_id_id', 'content_id_id')
+        #     .order_by('user_id_id')
+        # )
+        # user_likes3 = (
+        #     Like.objects
+        #     .select_related('content_id')
+        #     .values('user_id_id')
+        #     .annotate(count=Count('user_id_id'))
+        # )
+        # user_likes4 = Like.objects.raw(
+        #     'select 1 as id,'
+        #     'mm.user_id_id, '
+        #     'count(mm.user_id_id) '
+        #     'from main_like ml left join '
+        #     'main_mark mm on ml.content_id_id = mm.content_id_id '
+        #     'group by mm.user_id_id')
+        # user_likes6 = list(
+        #     Like.objects
+        #     .select_related('content_id')
+        #     .values('user_id_id', 'content_id')
+        #     # .annotate(dcount=Count('user_id_id'))
+        #     .order_by('user_id_id')
+        # )
+        user_likes5 = list(Like.objects.raw('''
+                select
+                    1 as id,  
+                    mm.user_id_id,
+                    ml.content_id_id
+                from main_like ml 
+                    left join main_mark mm on ml.content_id_id = mm.content_id_id;
+        '''))
+        df = pd.DataFrame()
+        i = 0
+        for elem in user_likes5:
+            df.loc[i, 'user_id'] = str(elem.user_id)
+            df.loc[i, 'content_id'] = elem.content_id.id
+            i += 1
+        a = df.groupby("user_id").aggregate({'user_id': 'count'})
+        a = a.rename(columns={'user_id': 'count'})
+        b = {}
+        for i in range(len(a)):
+            b[a.iloc[i].name] = a.iloc[i][0]
+        return b
 
     def points_adding(self, request):
         values = json.loads(request.body.decode('utf-8'))
