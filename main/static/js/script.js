@@ -98,6 +98,7 @@ function addMarker(form, coordinates, map) {
 
 function addLike(content_id) {
      likeData={
+        'actionType': 'addingLike',
         'content_id': content_id,
         'is_like': 1
     }

@@ -47,7 +47,7 @@ class FetchHandler(View):
         photos = list(Photo.objects.filter(content_id__in=content_indexes).values('id', 'photo', 'content_id'))
 
         marks = list(Mark.objects.filter(user_id=curr_user).values('latitude', 'longitude', 'content_id',
-                                                                              'user_id'))
+                                                                   'user_id'))
 
         likes = list(Like.objects.values('content_id').annotate(dcount=Count('content_id')))
 
@@ -75,7 +75,7 @@ class FetchHandler(View):
         if values['is_like']:
             cnt_id = values['content_id']
             print(cnt_id)
-            content_obj_id = Content.objects.get(pk=cnt_id) # айди должен принадлежать модели, а не быть int
+            content_obj_id = Content.objects.get(pk=cnt_id)  # айди должен принадлежать модели, а не быть int
             repeat_like = Like.objects.filter(content_id=content_obj_id, user_id=user).count()
             if repeat_like < 1:
                 Like.objects.create(content_id=content_obj_id, user_id=user)
@@ -88,7 +88,6 @@ class FetchHandler(View):
             for source in values['sources']:
                 Photo.objects.create(photo=source, content_id=content)
             Mark.objects.create(latitude=values['lat'], longitude=values['lng'], user_id=user, content_id=content)
-
 
         self.points_adding(request)
         return JsonResponse({'val': 'data'}, status=200)
@@ -107,23 +106,18 @@ class FetchHandler(View):
                 if points is not None:
                     self._raising_user_level(request, points)
         elif values['actionType'] == 'addingLike':
-            pass
-            # all_likes_count = len(list(Like.objects.filter(user_id=curr_user)))
-            # if all_likes_count >= 5:
-            #     points = self._adding_achievement_for_user(request, 1)
-            #     if points is not None:
-            #         self._raising_user_level(request, points)
-            # user_content_id = Mark.objects.filter(user_id=curr_user).values('content_id_id')
-            # user_content = [elem['content_id_id'] for elem in user_content_id]
-            # other_likes = len(list(Like.objects.filter(content_id__in=user_content).values()))
-            # if other_likes >=5:
-            #     points = self._adding_achievement_for_user(request, 3)
-            #     if points is not None:
-            #         self._raising_user_level(request, points)
-
-
-
-
+            all_likes_count = len(list(Like.objects.filter(user_id=curr_user)))
+            if all_likes_count >= 5:
+                points = self._adding_achievement_for_user(request, 1)
+                if points is not None:
+                    self._raising_user_level(request, points)
+            user_content_id = Mark.objects.filter(user_id=curr_user).values('content_id_id')
+            user_content = [elem['content_id_id'] for elem in user_content_id]
+            other_likes = len(list(Like.objects.filter(content_id__in=user_content).exclude(user_id=curr_user).values()))
+            if other_likes >= 5:
+                points = self._adding_achievement_for_user(request, 3)
+                if points is not None:
+                    self._raising_user_level(request, points)
 
     def _check_achievement(self, request, achievement_id) -> bool:
         current_user = get_user(request)
@@ -133,7 +127,7 @@ class FetchHandler(View):
             user_ach_list.append(ach['achievement_id_id'])
 
         if achievement_id not in user_ach_list:
-            print("равно пошел нахуй")
+
             return True
         return False
 
@@ -142,14 +136,13 @@ class FetchHandler(View):
         if len(list(UsersLevel.objects.filter(user_id=current_user).values())) == 0:
             UsersLevel.objects.create(user_id=current_user, total_points=0, level=0)
         # print(UsersLevel.objects.filter(user_id=current_user).values('total_points')[0]['total_points'])
-        user_points = list(UsersLevel.objects.filter(user_id=current_user).values('total_points'))[0]['total_points'] + points
+        user_points = list(UsersLevel.objects.filter(user_id=current_user).values('total_points'))[0][
+                          'total_points'] + points
 
         num = UsersLevel.objects.filter(user_id=current_user).update(total_points=user_points)
 
         new_level = list(Levels.objects.filter(points_for_level=points).values())[0]['id']
         user_level = UsersLevel.objects.filter(user_id=current_user).update(level=new_level)
-
-
 
     def _adding_achievement_for_user(self, request, achievement_id):
         achievement_check = self._check_achievement(request, achievement_id)

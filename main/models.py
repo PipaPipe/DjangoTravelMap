@@ -4,7 +4,7 @@ from django.db import models
 class Mark(models.Model):
     latitude = models.FloatField('Широта')
     longitude = models.FloatField('Долгота')
-    # is_approved = models.BooleanField('На согласовании', default=False)
+    is_approved = models.BooleanField('На согласовании', default=False)
     user_id = models.ForeignKey(
         verbose_name='ID пользователя',
         to='auth.user',
@@ -40,6 +40,7 @@ class Content(models.Model):
         verbose_name = 'Контент'  # Название таблицы в единственном числе
         verbose_name_plural = 'Контент'  # Название таблицы в множественном числе
 
+
 class Like(models.Model):
     content_id = models.ForeignKey(
         verbose_name='ID контента',
@@ -59,6 +60,7 @@ class Like(models.Model):
     class Meta:
         verbose_name = 'Лайк'  # Название таблицы в единственном числе
         verbose_name_plural = 'Лайки'  # Название таблицы в множественном числе
+
 
 class Photo(models.Model):
     photo = models.TextField('Фото')
