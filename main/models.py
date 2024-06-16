@@ -84,6 +84,7 @@ class Achievements(models.Model):
     name = models.CharField('Название', max_length=50)
     description = models.TextField('Описание')
     points = models.IntegerField('Очки')
+    photo = models.TextField('Фото')
 
     objects = models.Manager()
 
