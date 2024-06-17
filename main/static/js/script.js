@@ -153,12 +153,12 @@ function addPopupOnClick(map){
 
 
 
-function fillContent(marker, title, description, photos, coordinates, content_id, content_like){
+function fillContent(marker, title, description, photos, coordinates, content_id, content_like, state_like_list){
+    console.log(content_id)
     let photoArray = ""
     for (let photo of photos){
         photoArray += `<div class="photo-block"><div class="preview-container"><div class="image-container"><img src='${photo}'></div></div></div>`
     }
-
     let fillContent = ((name, description, photoArray) => {
           let content = `<h2 class="popup-title">${name}</h2>
           <div class="photo-section">
@@ -167,7 +167,8 @@ function fillContent(marker, title, description, photos, coordinates, content_id
           <div class="content_description">${description}</div>
           <div class="likes-block">
             <span class="likes-count" id="content_like">${content_like}</span>
-            <button class="image-button" id='like_button'onclick="addLike(${content_id})"></button>
+            <button class="image-button" id='like_button'></button>
+            <span class="content-id-value" hidden>${content_id}</span>
           </div>
           </div>`
           return content
@@ -175,41 +176,58 @@ function fillContent(marker, title, description, photos, coordinates, content_id
     marker.bindPopup(fillContent(title, description, photoArray))
 
 
-//    let marks = document.querySelectorAll('.leaflet-marker-icon')
-//
-//    marks.forEach((mark) => {
-//        mark.onclick = function() {
-//            setTimeout(() => {
-//                const likes = document.querySelectorAll(".image-button");
-//                const likes_counter = document.querySelector(".likes-count");
-//                let likesCount = 0;
-//
-//                likes.forEach((like) => {
-//                    like.onclick = function () {
-//                        if (event.target.style.backgroundImage == 'url("../img/Like Heart.png")'
+    let marks = document.querySelectorAll('.leaflet-marker-icon')
+    marks.forEach((mark) => {
+        mark.onclick = function() {
+            setTimeout(() => {
+                const cnt_id = document.querySelector(".content-id-value").textContent;
+                const likes = document.querySelectorAll(".image-button");
+                const likes_counter = document.querySelector(".likes-count");
+                let likesCount = likes_counter.textContent;
+                console.log('____')
+                console.log(cnt_id)
+//                console.log(likes[0])
+                console.log(state_like_list)
+                console.log(state_like_list.includes(cnt_id))
+//                console.log(title)
+//                console.log(mark)
+                if (state_like_list.includes(cnt_id)){ // state_like_list.includes(cnt_id) - РАБОТАЕТ НЕПРАВИЛЬНО!!!
+                    console.log("Лайк стоит")
+                    likes[0].style.backgroundImage = 'url("static/img/1.png")';
+                } else {
+                    console.log("Лайк не стоит")
+                    likes[0].style.backgroundImage = 'url("static/img/Like_Heart.png")'
+                }
+
+                likes.forEach((like) => {
+                    like.onclick = function () {
+
+                        if (state_like_list.includes(cnt_id))
+                        {
+                            event.target.style.backgroundImage = 'url("static/img/Like_Heart.png")'
+                            likesCount--;
+                        } else {
+                            event.target.style.backgroundImage = 'url("static/img/1.png")';
+                            likesCount++;
+                        }
+
+//                        if (event.target.style.backgroundImage == 'url("static/img/Like_Heart.png")'
 //                                || event.target.style.backgroundImage == '')
 //                        {
-//                            console.log(event.target.style.backgroundImage)
-//                            event.target.style.backgroundImage = 'url("../img/1.png")';
-//                            console.log(event.target.style.backgroundImage)
+//                            event.target.style.backgroundImage = 'url("static/img/1.png")';
 //                            likesCount++;
-//                            console.log(1)
 //                        } else {
-//                            event.target.style.backgroundImage = 'url("../img/Like Heart.png")';
+//                            event.target.style.backgroundImage = 'url("static/img/Like_Heart.png")'
 //                            likesCount--;
-//                            console.log(2)
 //                        }
-//                        likes_counter.textContent = likesCount
-//                        console.log(3)
-//                    };
-//                });
-//            }, 200)
-//
-//
-//        }
-//    })
+                        likes_counter.textContent = likesCount
+                        addLike(cnt_id)
+                    };
+                });
+            }, 200)
+        }
+    })
 }
-
     //singleMarker.bindPopup(fillContent('Маркер 1', 'Какой-то текст с описанием'))
     //
     //secondMarker.bindPopup(fillContent('Маркер 2', 'Какой-то текст с описанием'));

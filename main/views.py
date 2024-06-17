@@ -33,7 +33,6 @@ class FetchHandler(View):
         user_marks_count = list(sorted(user_marks_count.items(), key=lambda x: x[1]))
         user_marks_count.reverse()
         user_marks_count = dict(user_marks_count)
-        # print(f'{user_marks_count = }')
 
         user_context = request.user
         curr_user = request.user.id
@@ -43,6 +42,7 @@ class FetchHandler(View):
             if len(user) != 0:
                 curr_user = user[0]['id']
                 user_context = user[0]['username']
+
 
         content_list = list(Mark.objects.filter(user_id=curr_user).values('content_id'))
         content_indexes = [elem['content_id'] for elem in content_list]
@@ -58,7 +58,43 @@ class FetchHandler(View):
         #                                                                         'content_id',
         #                                                                         'user_id'))
         user_likes = self.get_liked_users()
+
+        state_like = list(Like.objects.filter(user_id=request.user.id).values("content_id_id"))
+        print(request.user.id)
+        print(curr_user)
+        print(state_like)
+
         user_levels = list(UsersLevel.objects.select_related('user_id').values('user_id__username', 'level'))
+
+
+
+        rating_dict = {}
+        for name in user_marks_count.keys():
+            rating_marks = user_marks_count[name]
+            rating_likes = user_likes[name]
+            rating_level = [level['level'] for level in user_levels if name == level['user_id__username']][0]
+            rating_dict[name] = [rating_marks, rating_likes, rating_level]
+
+        sort_method = 'name'
+        if sort_method == 'name':
+            rating_dict = sorted(rating_dict.items(), key=lambda item: item)
+        elif sort_method == 'marks':
+            rating_dict = sorted(rating_dict.items(), key=lambda item: item[1], reverse=True)
+        elif sort_method == 'likes':
+            rating_dict = sorted(rating_dict.items(), key=lambda item: item[1][1], reverse=True)
+        elif sort_method == 'levels':
+            rating_dict = sorted(rating_dict.items(), key=lambda item: item[1][2], reverse=True)
+        r = dict(rating_dict)
+        # print(*r, sep='\n')
+        # print(user_marks_count)
+        # print(user_marks_count.items())
+        # print()
+        # print(rating_dict)
+        # print(r.items())
+        print()
+        # print(content)
+        state_like_list = [elem['content_id_id'] for elem in state_like]
+        print(state_like_list)
 
         context = {
             'marks': marks,
@@ -68,11 +104,12 @@ class FetchHandler(View):
             'users_list': user_marks_count.items(),
             'content_likes': content_likes,
             'user_likes': user_likes.items(),
-            'user_levels': user_levels
+            'user_levels': user_levels,
+            'rating': r.items(),
+            'state_like': state_like_list
         }
-        # print("content = ")
-        # print(*context, sep='\n')
-        # print(content[0]["id"])
+        print()
+        print(context)
 
         # if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
         #     return JsonResponse({'Uknown': 1})
@@ -80,10 +117,10 @@ class FetchHandler(View):
         return render(request, 'main/index.html', context)
 
     def post(self, request):
+        print(request)
         # Получаем значения из ответа
         values = json.loads(request.body.decode('utf-8'))
         user = get_user(request)
-
         # Если POST-запрос для лайка, то ..., иначе POST-запрос для выставления метки
         if values['is_like']:
             cnt_id = values['content_id']

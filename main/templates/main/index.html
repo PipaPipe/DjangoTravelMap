@@ -11,16 +11,20 @@
       <p style="margin:10px 0">Для просмотра путешествий других пользователей введите его имя и нажмите кнопку "Поиск"</p>
         <p style="margin:10px 0">Отметки пользователя: {{ user_context }}</p>
       <form method="GET">
-        <input
-          type="search"
-          placeholder="Поиск пользователей"
-          name="user_search"
-          hidden
-        />
-        <button class="back_btn" type="submit">Вернуться к своей карте</button>
+        <button  class="back_btn" type="submit">Вернуться к своей карте</button>
       </form>
     <p style="margin:10px 0">Пользователь | отметки | лайки | уровень</p>
     <div class="user_list">
+
+<!--        {% for elem1, elem2 in rating %}-->
+
+<!--            {% for e in elem2 %}-->
+<!--                {{ e }}-->
+<!--            {% endfor %}-->
+<!--            break-->
+
+<!--        {% endfor %}-->
+
         <table>
         {% for user, count in users_list %}
             <tr>
@@ -69,6 +73,7 @@
     {{ content|json_script:"content-json"}}
     {{ photos|json_script:"photos-json"}}
     {{ content_likes|json_script:"like-json"}}
+    {{ state_like|json_script:"state-like-json"}}
 
     {% else %}
         <a href="{% url 'main:users_app:auth' %}">Авторизация</a>
@@ -91,6 +96,7 @@
         let content = JSON.parse(document.getElementById('content-json').textContent)
         let photos = JSON.parse(document.getElementById('photos-json').textContent)
         let content_likes = JSON.parse(document.getElementById('like-json').textContent)
+        let state_like_list = JSON.parse(document.getElementById('state-like-json').textContent)
 
         for (let mark of marks){
             let title = ''
@@ -119,7 +125,8 @@
                     like = elem['dcount']
                 }
             }
-            fillContent(marker, title, descr, photoArray, coordinates, content_id, like)
+            console.log(content_id)
+            fillContent(marker, title, descr, photoArray, coordinates, content_id, like, state_like_list)
         }
         addPopupOnClick(map)
     });
