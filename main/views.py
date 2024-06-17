@@ -58,6 +58,7 @@ class FetchHandler(View):
         #                                                                         'content_id',
         #                                                                         'user_id'))
         user_likes = self.get_liked_users()
+        user_levels = list(UsersLevel.objects.select_related('user_id').values('user_id__username', 'level'))
 
         context = {
             'marks': marks,
@@ -66,7 +67,8 @@ class FetchHandler(View):
             'user_context': user_context,
             'users_list': user_marks_count.items(),
             'content_likes': content_likes,
-            'user_likes': user_likes.items()
+            'user_likes': user_likes.items(),
+            'user_levels': user_levels
         }
         # print("content = ")
         # print(*context, sep='\n')

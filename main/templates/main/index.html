@@ -20,7 +20,6 @@
         <button class="back_btn" type="submit">Вернуться к своей карте</button>
       </form>
     <p style="margin:10px 0">Пользователь | отметки | лайки | уровень</p>
-
     <div class="user_list">
         <table>
         {% for user, count in users_list %}
@@ -43,6 +42,14 @@
                     {% for liked_user, liked_count in user_likes %}
                         {% if user == liked_user %}
                             {{ liked_count }}
+                        {% endif %}
+                    {% endfor %}
+                    &ensp;&ensp;&ensp;&ensp;
+                </td>
+                <td>
+                    {% for elem in user_levels %}
+                        {% if user == elem.user_id__username %}
+                            {{ elem.level }}
                         {% endif %}
                     {% endfor %}
                 </td>
