@@ -88,7 +88,13 @@
     document.addEventListener('DOMContentLoaded', () => {
         let map = createMap()
 
-        var myIcon = L.icon({
+        var disapprovedIcon = L.icon({
+          iconUrl: "static/img/gray_marker.png",
+          iconSize: [40, 40],
+        });
+
+        // Иконка для всех маркеров
+        var approvedIcon = L.icon({
           iconUrl: "static/img/red_marker.png",
           iconSize: [40, 40],
         });
@@ -105,8 +111,14 @@
             let coordinates = []
             let content_id
             let like = 0
+            var marker = 0
             coordinates = [mark['latitude'], mark['longitude']]
-            var marker = L.marker(coordinates, {icon: myIcon}).addTo(map)
+            if (mark['is_approved']){
+                marker = L.marker(coordinates, {icon: approvedIcon}).addTo(map)
+            } else{
+                marker = L.marker(coordinates, {icon: disapprovedIcon}).addTo(map)
+            }
+
             for (let elem of content){
                 if (mark['content_id'] == elem['id']) {
                     title = elem['title']

@@ -49,7 +49,7 @@ class FetchHandler(View):
         content = list(Content.objects.filter(id__in=content_indexes).values('id', 'title', 'description'))
         photos = list(Photo.objects.filter(content_id__in=content_indexes).values('id', 'photo', 'content_id'))
         marks = list(Mark.objects.filter(user_id=curr_user).values('latitude', 'longitude', 'content_id',
-                                                                   'user_id'))
+                                                                   'user_id', 'is_approved'))
         content_likes = list(Like.objects.values('content_id').annotate(dcount=Count('content_id')))
 
         # if curr_user != get_user(request).id:

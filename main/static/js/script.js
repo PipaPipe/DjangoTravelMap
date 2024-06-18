@@ -19,10 +19,13 @@ function createMap(){
     return map
 }
 
-
+var disapprovedIcon = L.icon({
+  iconUrl: "static/img/gray_marker.png",
+  iconSize: [40, 40],
+});
 
 // Иконка для всех маркеров
-var myIcon = L.icon({
+var approvedIcon = L.icon({
   iconUrl: "static/img/red_marker.png",
   iconSize: [40, 40],
 });
@@ -91,7 +94,7 @@ function addMarker(form, coordinates, map) {
         'actionType': 'addingMark'
     }
     // Создание маркера
-    L.marker([coordinates.lat, coordinates.lng], {icon:myIcon}).addTo(map)
+    L.marker([coordinates.lat, coordinates.lng], {icon:disapprovedIcon}).addTo(map)
     makeRequest('/map', 'POST', JSON.stringify(markData))
     map.closePopup()
 }
