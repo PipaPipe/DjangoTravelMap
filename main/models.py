@@ -123,8 +123,8 @@ class UsersLevel(models.Model):
         verbose_name='ID пользователя',
         to='auth.user',
         on_delete=models.CASCADE)
-    level = models.IntegerField('Уровень пользователя')
-    total_points = models.IntegerField('Очки пользователя')
+    level = models.IntegerField('Уровень пользователя', default=0)
+    total_points = models.IntegerField('Очки пользователя', default=0)
 
     objects = models.Manager()
 
