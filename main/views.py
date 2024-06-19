@@ -64,6 +64,10 @@ class FetchHandler(View):
         print(curr_user)
         print(state_like)
 
+        # Проверка есть ли пользователь в уровнях, если нет, то создаем
+        if len(list(UsersLevel.objects.filter(user_id=curr_user).values('level', 'total_points'))) == 0:
+            UsersLevel.objects.update_or_create(user_id=get_user(request), level=0, total_points=0)
+
         user_levels = list(UsersLevel.objects.select_related('user_id').values('user_id__username', 'level'))
 
 
@@ -100,6 +104,8 @@ class FetchHandler(View):
         achievements = list(UsersAchievements.objects.filter(user_id=curr_user).values('achievement_id_id'))
         achievements_id = [elem['achievement_id_id'] for elem in achievements]
         curr_achievements = Achievements.objects.filter(id__in=achievements_id).values('name')
+
+
 
         current_user_level = list(UsersLevel.objects.filter(user_id=curr_user).values('level', 'total_points'))[0]
 
