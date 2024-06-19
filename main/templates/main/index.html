@@ -7,26 +7,36 @@
 
     {% if request.user.is_authenticated %}
 <header>
-      <h3>Добро пожаловать, {{request.user.username}}</h3>
-      <p style="margin:10px 0">Для просмотра путешествий других пользователей введите его имя и нажмите кнопку "Поиск"</p>
-        <p style="margin:10px 0">Отметки пользователя: {{ user_context }}</p>
-      <form method="GET">
-        <button  class="back_btn" type="submit">Вернуться к своей карте</button>
-      </form>
-    <p style="margin:10px 0">Пользователь | отметки | лайки | уровень</p>
-    <div class="user_list">
+    <div class="dropdown-header">
+      <h3>Добро пожаловать, {{request.user.username}} !</h3>
+      <i class="arrow"></i>
+      <a href="{% url 'users_app:logout' %}">Выйти</a>
+    </div>
+    <div class="dropdown-content">
+      <ul>
+        <li><a href="#" class="menu-item menu-item-active" data-id="search">Поиск</a></li>
+        <li><a href="#" class="menu-item" data-id="friends">Друзья</a></li>
+        <li><a href="#" class="menu-item" data-id="achievements">Достижения</a></li>
+      </ul>
+      <hr>
+      <div class="submenu">
+        <div class="submenu-item" id="search" style="display: block;">
+          <p style="margin:10px 0">Отметки пользователя: {{ user_context }}</p>
+          <form method="GET">
+            <button class="back_btn" type="submit">Вернуться к своей карте</button>
+          </form>
+          <div class="user_list">
 
-<!--        {% for elem1, elem2 in rating %}-->
-
-<!--            {% for e in elem2 %}-->
-<!--                {{ e }}-->
-<!--            {% endfor %}-->
-<!--            break-->
-
-<!--        {% endfor %}-->
-
-        <table>
-        {% for user, count in users_list %}
+            <table class="users-table">
+                <thead>
+                <tr>
+                  <th>Пользователь</th>
+                    <th>Кол-во отметок</th>
+                  <th>Кол-во лайков</th>
+                    <th>Уровень</th>
+                </tr>
+              </thead>
+                {% for user, count in users_list %}
             <tr>
 
                 <td>
@@ -57,13 +67,103 @@
                         {% endif %}
                     {% endfor %}
                 </td>
-
             </tr>
-        {% endfor %}
-        </table>
+                {%endfor%}
+
+            </table>
+          </div>
+        </div>
+        <div class="submenu-item" id="friends">
+          <div class="user_list">
+              <p>On vacation, comming soon!</p>
+          </div>
+
+          <div class="filter-container">
+            <div class="filter-row">
+              <span>Фильтрация по лайкам</span>
+              <button class="btn-sort" data-sort="likes-asc">&#x25B2;</button>
+              <button class="btn-sort" data-sort="likes-desc">&#x25BC;</button>
+            </div>
+            <div class="filter-row">
+              <span>Фильтрация по отметкам</span>
+              <button class="btn-sort" data-sort="marks-asc">&#x25B2;</button>
+              <button class="btn-sort" data-sort="marks-desc">&#x25BC;</button>
+            </div>
+            <button class="btn-clear">Очистить фильтры</button>
+          </div>
+        </div>
+        <div class="submenu-item" id="achievements">
+          <div class="ach-block">
+            <p class="ach-title">Мой прогресс</p>
+            <div class="level-block">
+              <span>Уровень: {{ current_user_level.level }}</span>
+                <span>Кол-во очков: {{ current_user_level.total_points }}</span>
+            </div>
+          </div>
+          <div class="ach-block">
+            <p class="ach-title">Мои достижения</p>
+            <div class="my-achievements-list">
+                {% for achievement in achievements%}
+              <div class="achievements-row">
+                <img class="achievements-icon" src="/Like Heart.png" alt="">
+                <div style="display: flex;flex-direction: column;">
+                  <div>
+                    <span>{{ achievement.name }}</span>
+                  </div>
+                </div>
+              </div>
+                {% endfor %}
+            </div>
+          </div>
+          <div class="ach-block">
+            <p class="ach-title">Все достижения</p>
+            <div class="my-achievements-list">
+              <div class="achievements-row">
+                <img class="achievements-icon" src="/Like Heart.png" alt="">
+                <div style="display: flex;flex-direction: column;">
+                  <div>
+                    <span>Лайк - турист</span>
+                    <span>(10 баллов)</span>
+                  </div>
+                  <span class="achievements-description">Проставить 5 лайков на метки другим пользователям</span>
+                </div>
+              </div>
+              <div class="achievements-row">
+                <img class="achievements-icon" src="/Like Heart.png" alt="">
+                <div style="display: flex;flex-direction: column;">
+                  <div>
+                    <span>Метко - мастер</span>
+                    <span>(20 баллов)</span>
+                  </div>
+                  <span class="achievements-description">Создать 5 меток с описанием</span>
+                </div>
+              </div>
+              <div class="achievements-row">
+                <img class="achievements-icon" src="/Like Heart.png" alt="">
+                <div style="display: flex;flex-direction: column;">
+                  <div>
+                    <span>Лайк - легенда</span>
+                    <span>(30 баллов)</span>
+                  </div>
+                  <span class="achievements-description">Получить 5 лайков на своих метках от других
+                    пользователей</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+<!--        {% for elem1, elem2 in rating %}-->
+
+<!--            {% for e in elem2 %}-->
+<!--                {{ e }}-->
+<!--            {% endfor %}-->
+<!--            break-->
+
+<!--        {% endfor %}-->
     </div>
-    <a href="{% url 'users_app:logout' %}">Выйти</a>
-    </header>
+</header>
 
     <div id="map">
         <div class="leaflet-control coordinate"></div>

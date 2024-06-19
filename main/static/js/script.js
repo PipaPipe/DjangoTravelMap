@@ -183,21 +183,16 @@ function fillContent(marker, title, description, photos, coordinates, content_id
     marks.forEach((mark) => {
         mark.onclick = function() {
             setTimeout(() => {
-                const cnt_id = document.querySelector(".content-id-value").textContent;
+                const cnt_id = Number(document.querySelector(".content-id-value").textContent);
                 const likes = document.querySelectorAll(".image-button");
                 const likes_counter = document.querySelector(".likes-count");
                 let likesCount = likes_counter.textContent;
-                console.log('____')
-                console.log(cnt_id)
-//                console.log(likes[0])
-                console.log(state_like_list)
-                console.log(state_like_list.includes(cnt_id))
-//                console.log(title)
-//                console.log(mark)
-                if (state_like_list.includes(cnt_id)){ // state_like_list.includes(cnt_id) - РАБОТАЕТ НЕПРАВИЛЬНО!!!
+
+
+                if (state_like_list.indexOf(cnt_id) != -1){ // state_like_list.includes(cnt_id) - РАБОТАЕТ НЕПРАВИЛЬНО!!!
                     console.log("Лайк стоит")
                     likes[0].style.backgroundImage = 'url("static/img/1.png")';
-                } else {
+                } else if (state_like_list.indexOf(cnt_id) === -1){
                     console.log("Лайк не стоит")
                     likes[0].style.backgroundImage = 'url("static/img/Like_Heart.png")'
                 }
@@ -205,24 +200,18 @@ function fillContent(marker, title, description, photos, coordinates, content_id
                 likes.forEach((like) => {
                     like.onclick = function () {
 
-                        if (state_like_list.includes(cnt_id))
+                        if (event.target.style.backgroundImage == 'url("static/img/1.png")')
                         {
+
                             event.target.style.backgroundImage = 'url("static/img/Like_Heart.png")'
                             likesCount--;
                         } else {
                             event.target.style.backgroundImage = 'url("static/img/1.png")';
                             likesCount++;
+
+
                         }
 
-//                        if (event.target.style.backgroundImage == 'url("static/img/Like_Heart.png")'
-//                                || event.target.style.backgroundImage == '')
-//                        {
-//                            event.target.style.backgroundImage = 'url("static/img/1.png")';
-//                            likesCount++;
-//                        } else {
-//                            event.target.style.backgroundImage = 'url("static/img/Like_Heart.png")'
-//                            likesCount--;
-//                        }
                         likes_counter.textContent = likesCount
                         addLike(cnt_id)
                     };
@@ -231,10 +220,32 @@ function fillContent(marker, title, description, photos, coordinates, content_id
         }
     })
 }
-    //singleMarker.bindPopup(fillContent('Маркер 1', 'Какой-то текст с описанием'))
-    //
-    //secondMarker.bindPopup(fillContent('Маркер 2', 'Какой-то текст с описанием'));
 
-    // secondMarker.setPopupContent(`<p>LOLODFDF</p>`) записать html в popup
-    // console.log(secondMarker.getPopup().getContent()) получить html из popup
-    // console.log(singleMarker.getLatLng());
+
+// стили для выпадающего меню
+const dropdownHeaders = document.querySelector('.dropdown-header');
+const dropdownContent = document.querySelector('.dropdown-content');
+const menuItems = document.querySelectorAll('.menu-item');
+const submenuItems = document.querySelectorAll('.submenu-item');
+
+console.log(dropdownHeaders);
+
+dropdownHeaders.addEventListener('click', () => {
+  dropdownContent.classList.toggle('active');
+});
+
+menuItems.forEach((menuItem) => {
+    menuItem.addEventListener('click', (e) => {
+      e.preventDefault();
+      const id = menuItem.getAttribute('data-id');
+      // снимаем со всех выделение и скрываем
+      menuItems.forEach((item) => item.classList.remove('menu-item-active'));
+      submenuItems.forEach((submenuItem) => submenuItem.style.display = 'none');
+      // одному даем выделение и показываем
+      menuItem.classList.add('menu-item-active');
+      const targetSubmenuItem = document.getElementById(id);
+      if (targetSubmenuItem) {
+        targetSubmenuItem.style.display = 'block';
+      }
+    });
+  });

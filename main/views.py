@@ -96,6 +96,13 @@ class FetchHandler(View):
         state_like_list = [elem['content_id_id'] for elem in state_like]
         print(state_like_list)
 
+
+        achievements = list(UsersAchievements.objects.filter(user_id=curr_user).values('achievement_id_id'))
+        achievements_id = [elem['achievement_id_id'] for elem in achievements]
+        curr_achievements = Achievements.objects.filter(id__in=achievements_id).values('name')
+
+        current_user_level = list(UsersLevel.objects.filter(user_id=curr_user).values('level', 'total_points'))[0]
+
         context = {
             'marks': marks,
             'content': content,
@@ -106,7 +113,9 @@ class FetchHandler(View):
             'user_likes': user_likes.items(),
             'user_levels': user_levels,
             'rating': r.items(),
-            'state_like': state_like_list
+            'state_like': state_like_list,
+            'achievements': curr_achievements,
+            'current_user_level': current_user_level
         }
         print()
         print(context)
