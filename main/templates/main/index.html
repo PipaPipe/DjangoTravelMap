@@ -95,6 +95,7 @@
             <p class="ach-title">Мой прогресс</p>
             <div class="level-block">
               <span>Уровень: {{ current_user_level.level }}</span>
+                <br>
                 <span>Кол-во очков: {{ current_user_level.total_points }}</span>
             </div>
           </div>
@@ -103,7 +104,15 @@
             <div class="my-achievements-list">
                 {% for achievement in achievements%}
               <div class="achievements-row">
-                <img class="achievements-icon" src="/Like Heart.png" alt="">
+                  {%if achievement.name == "Лайк - турист"%}
+                    <img class="achievements-icon" src="static/img/like-tourist.png" alt="">
+                  {% endif %}
+                  {%if achievement.name == "Метко - мастер"%}
+                    <img class="achievements-icon" src="static/img/marks-master.png" alt="">
+                  {% endif %}
+                  {%if achievement.name == "Лайк - легенда"%}
+                    <img class="achievements-icon" src="static/img/like-legend.png" alt="">
+                  {% endif %}
                 <div style="display: flex;flex-direction: column;">
                   <div>
                     <span>{{ achievement.name }}</span>
