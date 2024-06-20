@@ -14,7 +14,7 @@ function createMap(){
     googleStreets.addTo(map);
     map.zoomControl.remove();
     L.control.zoom({
-        position: 'topright'
+        position: 'topleft'
     }).addTo(map);
     return map
 }
