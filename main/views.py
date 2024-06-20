@@ -43,7 +43,6 @@ class FetchHandler(View):
                 curr_user = user[0]['id']
                 user_context = user[0]['username']
 
-
         content_list = list(Mark.objects.filter(user_id=curr_user).values('content_id'))
         content_indexes = [elem['content_id'] for elem in content_list]
         content = list(Content.objects.filter(id__in=content_indexes).values('id', 'title', 'description'))
@@ -71,43 +70,15 @@ class FetchHandler(View):
         user_levels = list(UsersLevel.objects.select_related('user_id').values('user_id__username', 'level'))
 
 
-
-        rating_dict = {}
-        for name in user_marks_count.keys():
-            rating_marks = user_marks_count[name]
-            rating_likes = user_likes[name]
-            rating_level = [level['level'] for level in user_levels if name == level['user_id__username']][0]
-            rating_dict[name] = [rating_marks, rating_likes, rating_level]
-
-        sort_method = 'name'
-        if sort_method == 'name':
-            rating_dict = sorted(rating_dict.items(), key=lambda item: item)
-        elif sort_method == 'marks':
-            rating_dict = sorted(rating_dict.items(), key=lambda item: item[1], reverse=True)
-        elif sort_method == 'likes':
-            rating_dict = sorted(rating_dict.items(), key=lambda item: item[1][1], reverse=True)
-        elif sort_method == 'levels':
-            rating_dict = sorted(rating_dict.items(), key=lambda item: item[1][2], reverse=True)
-        r = dict(rating_dict)
-        # print(*r, sep='\n')
-        # print(user_marks_count)
-        # print(user_marks_count.items())
-        # print()
-        # print(rating_dict)
-        # print(r.items())
-        print()
         # print(content)
         state_like_list = [elem['content_id_id'] for elem in state_like]
         print(state_like_list)
 
-
-        achievements = list(UsersAchievements.objects.filter(user_id=curr_user).values('achievement_id_id'))
+        achievements = list(UsersAchievements.objects.filter(user_id=request.user).values('achievement_id_id'))
         achievements_id = [elem['achievement_id_id'] for elem in achievements]
         curr_achievements = Achievements.objects.filter(id__in=achievements_id).values('name')
 
-
-
-        current_user_level = list(UsersLevel.objects.filter(user_id=curr_user).values('level', 'total_points'))[0]
+        current_user_level = list(UsersLevel.objects.filter(user_id=request.user).values('level', 'total_points'))[0]
 
         context = {
             'marks': marks,
@@ -118,7 +89,6 @@ class FetchHandler(View):
             'content_likes': content_likes,
             'user_likes': user_likes.items(),
             'user_levels': user_levels,
-            'rating': r.items(),
             'state_like': state_like_list,
             'achievements': curr_achievements,
             'current_user_level': current_user_level
@@ -202,16 +172,21 @@ class FetchHandler(View):
         '''))
         df = pd.DataFrame()
         i = 0
-        for elem in user_likes5:
-            df.loc[i, 'user_id'] = str(elem.user_id)
-            df.loc[i, 'content_id'] = elem.content_id.id
-            i += 1
-        a = df.groupby("user_id").aggregate({'user_id': 'count'})
-        a = a.rename(columns={'user_id': 'count'})
-        b = {}
-        for i in range(len(a)):
-            b[a.iloc[i].name] = a.iloc[i][0]
-        return b
+        if len(user_likes5) > 0:
+            for elem in user_likes5:
+                df.loc[i, 'user_id'] = str(elem.user_id)
+                df.loc[i, 'content_id'] = elem.content_id.id
+                i += 1
+            a = df.groupby("user_id").aggregate({'user_id': 'count'})
+            a = a.rename(columns={'user_id': 'count'})
+            b = {}
+
+            for i in range(len(a)):
+                b[a.iloc[i].name] = a.iloc[i][0]
+            return b
+        else:
+            return {}
+
 
     def points_adding(self, request):
         values = json.loads(request.body.decode('utf-8'))
