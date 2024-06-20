@@ -52,11 +52,11 @@ class FetchHandler(View):
                                                                    'user_id', 'is_approved'))
         content_likes = list(Like.objects.values('content_id').annotate(dcount=Count('content_id')))
 
-        # if curr_user != get_user(request).id:
-        #     marks = list(
-        #         Mark.objects.filter(user_id=curr_user, is_approved=True).values('latitude', 'longitude',
-        #                                                                         'content_id',
-        #                                                                         'user_id'))
+        if curr_user != get_user(request).id:
+            marks = list(
+                Mark.objects.filter(user_id=curr_user, is_approved=True).values('latitude', 'longitude',
+                                                                                'content_id',
+                                                                                'user_id', 'is_approved'))
         user_likes = self.get_liked_users()
 
         state_like = list(Like.objects.filter(user_id=request.user.id).values("content_id_id"))
