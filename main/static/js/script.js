@@ -216,36 +216,9 @@ function fillContent(marker, title, description, photos, coordinates, content_id
                         addLike(cnt_id)
                     };
                 });
-            }, 200)
+            }, 12)
         }
     })
 }
 
 
-// стили для выпадающего меню
-const dropdownHeaders = document.querySelector('.dropdown-header');
-const dropdownContent = document.querySelector('.dropdown-content');
-const menuItems = document.querySelectorAll('.menu-item');
-const submenuItems = document.querySelectorAll('.submenu-item');
-
-console.log(dropdownHeaders);
-
-dropdownHeaders.addEventListener('click', () => {
-  dropdownContent.classList.toggle('active');
-});
-
-menuItems.forEach((menuItem) => {
-    menuItem.addEventListener('click', (e) => {
-      e.preventDefault();
-      const id = menuItem.getAttribute('data-id');
-      // снимаем со всех выделение и скрываем
-      menuItems.forEach((item) => item.classList.remove('menu-item-active'));
-      submenuItems.forEach((submenuItem) => submenuItem.style.display = 'none');
-      // одному даем выделение и показываем
-      menuItem.classList.add('menu-item-active');
-      const targetSubmenuItem = document.getElementById(id);
-      if (targetSubmenuItem) {
-        targetSubmenuItem.style.display = 'block';
-      }
-    });
-  });

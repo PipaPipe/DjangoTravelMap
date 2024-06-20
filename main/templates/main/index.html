@@ -15,7 +15,6 @@
     <div class="dropdown-content">
       <ul>
         <li><a href="#" class="menu-item menu-item-active" data-id="search">Поиск</a></li>
-        <li><a href="#" class="menu-item" data-id="friends">Друзья</a></li>
         <li><a href="#" class="menu-item" data-id="achievements">Достижения</a></li>
       </ul>
       <hr>
@@ -47,7 +46,7 @@
                           value="{{ user }}"
                           hidden
                         />
-                        <button class="search_btn" type="submit">Перейти к {{ user }}</button>
+                        <button class="unstyled-button" type="submit">Перейти к {{ user }}</button>
                         &ensp;&ensp;&ensp;
                     </form>
                 </td>
@@ -72,26 +71,25 @@
 
             </table>
           </div>
-        </div>
-        <div class="submenu-item" id="friends">
-          <div class="user_list">
-              <p>On vacation, comming soon!</p>
-          </div>
-
           <div class="filter-container">
             <div class="filter-row">
-              <span>Фильтрация по лайкам</span>
+              <span>Сортировка по лайкам:</span>
               <button class="btn-sort" data-sort="likes-asc">&#x25B2;</button>
               <button class="btn-sort" data-sort="likes-desc">&#x25BC;</button>
             </div>
             <div class="filter-row">
-              <span>Фильтрация по отметкам</span>
-              <button class="btn-sort" data-sort="marks-asc">&#x25B2;</button>
-              <button class="btn-sort" data-sort="marks-desc">&#x25BC;</button>
+              <span>Сортировка по отметкам:</span>
+              <button class="btn-sort" data-sort="count-asc">&#x25B2;</button>
+              <button class="btn-sort" data-sort="count-desc">&#x25BC;</button>
             </div>
-            <button class="btn-clear">Очистить фильтры</button>
+            <div class="filter-row">
+              <span>Сортировка по уровню:</span>
+              <button class="btn-sort" data-sort="levels-asc">&#x25B2;</button>
+              <button class="btn-sort" data-sort="levels-desc">&#x25BC;</button>
+            </div>
           </div>
         </div>
+
         <div class="submenu-item" id="achievements">
           <div class="ach-block">
             <p class="ach-title">Мой прогресс</p>
@@ -119,7 +117,7 @@
             <p class="ach-title">Все достижения</p>
             <div class="my-achievements-list">
               <div class="achievements-row">
-                <img class="achievements-icon" src="/Like Heart.png" alt="">
+                <img class="achievements-icon" src="static/img/like-tourist.png" alt="">
                 <div style="display: flex;flex-direction: column;">
                   <div>
                     <span>Лайк - турист</span>
@@ -129,7 +127,7 @@
                 </div>
               </div>
               <div class="achievements-row">
-                <img class="achievements-icon" src="/Like Heart.png" alt="">
+                <img class="achievements-icon" src="static/img/marks-master.png" alt="">
                 <div style="display: flex;flex-direction: column;">
                   <div>
                     <span>Метко - мастер</span>
@@ -139,14 +137,13 @@
                 </div>
               </div>
               <div class="achievements-row">
-                <img class="achievements-icon" src="/Like Heart.png" alt="">
+                <img class="achievements-icon" src="static/img/like-legend.png" alt="">
                 <div style="display: flex;flex-direction: column;">
                   <div>
                     <span>Лайк - легенда</span>
                     <span>(30 баллов)</span>
                   </div>
-                  <span class="achievements-description">Получить 5 лайков на своих метках от других
-                    пользователей</span>
+                  <span class="achievements-description">Получить 5 лайков на своих метках</span>
                 </div>
               </div>
             </div>
@@ -174,6 +171,7 @@
     {{ photos|json_script:"photos-json"}}
     {{ content_likes|json_script:"like-json"}}
     {{ state_like|json_script:"state-like-json"}}
+    {{user_levels|json_script:"test"}}
 
     {% else %}
         <a href="{% url 'main:users_app:auth' %}">Авторизация</a>
@@ -203,6 +201,8 @@
         let photos = JSON.parse(document.getElementById('photos-json').textContent)
         let content_likes = JSON.parse(document.getElementById('like-json').textContent)
         let state_like_list = JSON.parse(document.getElementById('state-like-json').textContent)
+        let test = JSON.parse(document.getElementById('test').textContent)
+        console.log('ТЕСТ: ',test)
 
         for (let mark of marks){
             let title = ''
@@ -241,6 +241,91 @@
             fillContent(marker, title, descr, photoArray, coordinates, content_id, like, state_like_list)
         }
         addPopupOnClick(map)
+
+
+
+
+        // стили для выпадающего меню
+const dropdownHeaders = document.querySelector('.dropdown-header');
+const dropdownContent = document.querySelector('.dropdown-content');
+const menuItems = document.querySelectorAll('.menu-item');
+const submenuItems = document.querySelectorAll('.submenu-item');
+
+console.log(dropdownHeaders);
+
+dropdownHeaders.addEventListener('click', () => {
+  dropdownContent.classList.toggle('active');
+});
+
+menuItems.forEach((menuItem) => {
+    menuItem.addEventListener('click', (e) => {
+      e.preventDefault();
+      const id = menuItem.getAttribute('data-id');
+      // снимаем со всех выделение и скрываем
+      menuItems.forEach((item) => item.classList.remove('menu-item-active'));
+      submenuItems.forEach((submenuItem) => submenuItem.style.display = 'none');
+      // одному даем выделение и показываем
+      menuItem.classList.add('menu-item-active');
+      const targetSubmenuItem = document.getElementById(id);
+      if (targetSubmenuItem) {
+        targetSubmenuItem.style.display = 'block';
+      }
+
+      // Сортировка
+      if (id == 'search') {
+        const table = document.querySelector('.users-table');
+        const headers = table.querySelectorAll('th');
+        const rows = Array.from(table.querySelectorAll('tbody tr'));
+
+        document.querySelectorAll('.btn-sort').forEach(button => {
+        button.addEventListener('click', () => {
+            const order = button.getAttribute('data-sort');
+            const columnIndex = getColumnIndex(order);
+            const ascending = order.endsWith('asc');
+            sortTable(rows, columnIndex, ascending);
+        });
+    });
+
+    function getColumnIndex(order) {
+        switch(order) {
+            case 'count-asc':
+            case 'count-desc':
+                return Array.from(headers).findIndex(header => header.textContent.includes('Кол-во отметок'));
+            case 'likes-asc':
+            case 'likes-desc':
+                return Array.from(headers).findIndex(header => header.textContent.includes('Кол-во лайков'));
+            case 'levels-asc':
+            case 'levels-desc':
+                return Array.from(headers).findIndex(header => header.textContent.includes('Уровень'));
+        }
+    }
+
+    function sortTable(rows, columnIndex, ascending) {
+        const sortedRows = rows.sort((a, b) => {
+            const aText = a.children[columnIndex].textContent.trim();
+            const bText = b.children[columnIndex].textContent.trim();
+            const aValue = parseInt(aText);
+            const bValue = parseInt(bText);
+
+            if (ascending) {
+                return aValue - bValue;
+            } else {
+                return bValue - aValue;
+            }
+        });
+
+        const tbody = table.querySelector('tbody');
+        sortedRows.forEach(row => tbody.appendChild(row));
+    }
+      }
+    });
+  });
+
+
+
+
+
+
     });
 
 
